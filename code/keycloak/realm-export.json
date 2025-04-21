@@ -1,6 +1,6 @@
 {
   "id": "22f9b314-8ed6-4263-afde-adc7aec7b14f",
-  "realm": "example-realm",
+  "realm": "ddd-realm",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -58,7 +58,7 @@
       },
       {
         "id": "0fa47e89-4eb9-4686-9659-fd9bf6410c81",
-        "name": "default-roles-example-realm",
+        "name": "default-roles-ddd-realm",
         "description": "${role_default-roles}",
         "composite": true,
         "composites": {
@@ -88,7 +88,7 @@
       }
     ],
     "client": {
-      "example-web": [],
+      "ddd-web": [],
       "realm-management": [
         {
           "id": "dd9b719d-c92b-4a99-8610-e129fc7cdaea",
@@ -303,7 +303,7 @@
       ],
       "security-admin-console": [],
       "admin-cli": [],
-      "example-server": [],
+      "ddd-server": [],
       "account-console": [],
       "broker": [
         {
@@ -409,7 +409,7 @@
   "groups": [],
   "defaultRole": {
     "id": "0fa47e89-4eb9-4686-9659-fd9bf6410c81",
-    "name": "default-roles-example-realm",
+    "name": "default-roles-ddd-realm",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
@@ -484,13 +484,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/example-realm/account/",
+      "baseUrl": "/realms/ddd-realm/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/example-realm/account/*"
+        "/realms/ddd-realm/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -531,13 +531,13 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/example-realm/account/",
+      "baseUrl": "/realms/ddd-realm/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/example-realm/account/*"
+        "/realms/ddd-realm/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -673,7 +673,7 @@
     },
     {
       "id": "357e065c-36ce-4e5b-8fdb-3dd940f197d7",
-      "clientId": "example-server",
+      "clientId": "ddd-server",
       "name": "",
       "description": "",
       "rootUrl": "http://localhost:8080",
@@ -730,7 +730,7 @@
     },
     {
       "id": "854a8eb9-e252-4c54-809a-7f0b466cbfc8",
-      "clientId": "example-web",
+      "clientId": "ddd-web",
       "name": "",
       "description": "",
       "rootUrl": "http://localhost:5173",
@@ -841,13 +841,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/example-realm/console/",
+      "baseUrl": "/admin/ddd-realm/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/admin/example-realm/console/*"
+        "/admin/ddd-realm/console/*"
       ],
       "webOrigins": [
         "+"
@@ -1595,7 +1595,7 @@
     {
       "id": "df2a29ae-bf93-4f55-8c5e-68466bac9c2a",
       "name": "untrusted-audience",
-      "description": "Custom scope for example-server to optionally include other clients (public access preferred) to be the audience for the token.",
+      "description": "Custom scope for ddd-server to optionally include other clients (public access preferred) to be the audience for the token.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "false",
@@ -1606,12 +1606,12 @@
       "protocolMappers": [
         {
           "id": "090ed145-5a1a-479a-856e-815df005280f",
-          "name": "example-web-as-audience",
+          "name": "ddd-web-as-audience",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-audience-mapper",
           "consentRequired": false,
           "config": {
-            "included.client.audience": "example-web",
+            "included.client.audience": "ddd-web",
             "id.token.claim": "false",
             "lightweight.claim": "false",
             "access.token.claim": "true",

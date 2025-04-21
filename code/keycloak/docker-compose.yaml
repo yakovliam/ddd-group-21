@@ -1,9 +1,9 @@
 version: "3.9"
-name: example-keycloak
+name: keycloak_ddd
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.1.2
-    container_name: example-keycloak-0.0.0
+    container_name: keycloak-ddd-0.0.0
     command:
       - "start-dev"
       - "--import-realm"
