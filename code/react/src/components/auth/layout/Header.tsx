@@ -5,7 +5,7 @@ const Header = () => {
   const { authContext } = useEasyAuth();
 
   const logout = () => {
-    authContext.signoutRedirect();
+    authContext.signoutSilent();
   };
 
   return (
