@@ -1,10 +1,18 @@
+import { BrowserRouter, Route, Routes } from "react-router";
+import AuthenticationContextWrapper from "@/components/auth/AuthenticationContextWrapper";
+import HomePage from "@/pages/home/HomePage";
+import Layout from "./components/auth/layout/Layout";
+
 function App() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="text-3xl font-bold underline">
-        This is a React + TypeScript + Tailwind CSS + Vite + Bun template
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthenticationContextWrapper />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+          </Route></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

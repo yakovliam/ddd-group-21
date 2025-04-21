@@ -2,7 +2,7 @@ import useEasyAuth from "@/hooks/use-easy-auth";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
-const AuthenticationTools = () => {
+const AuthenticationContextWrapper = () => {
     const { authContext } = useEasyAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,4 +39,4 @@ const AuthenticationTools = () => {
     return <Outlet />;
 };
 
-export default AuthenticationTools;
+export default AuthenticationContextWrapper;
