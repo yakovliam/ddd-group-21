@@ -62,5 +62,4 @@ const ReverseProtectedRoute = () => {
   return <Outlet />;
 };
 
-
 export default App;
