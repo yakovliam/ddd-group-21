@@ -1,0 +1,16 @@
+version: "3.9"
+name: example-keycloak
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.2
+    container_name: example-keycloak-0.0.0
+    command:
+      - "start-dev"
+      - "--import-realm"
+    environment:
+      - "KEYCLOAK_ADMIN=admin"
+      - "KEYCLOAK_ADMIN_PASSWORD=admin"
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+      - 8070:8080
