@@ -4,6 +4,7 @@ import HomePage from "@/pages/home/HomePage";
 import Layout from "@/components/auth/layout/Layout";
 import useEasyAuth from "@/hooks/use-easy-auth";
 import Loading from "./components/loading/Loading";
+import LoginPage from "./pages/login/LoginPage";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
 
             <Route element={<ReverseProtectedRoute />}>
-              <Route path="/login" element={<h1>Login Page</h1>} />
+              <Route path="/login" element={<LoginPage />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>
