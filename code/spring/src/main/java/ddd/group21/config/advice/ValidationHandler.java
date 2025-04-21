@@ -1,4 +1,4 @@
-package com.example.config.advice;
+package ddd.group21.config.advice;
 
 import java.util.HashMap;
 import java.util.Map;
