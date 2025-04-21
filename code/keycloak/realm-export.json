@@ -85,6 +85,24 @@
         "clientRole": false,
         "containerId": "22f9b314-8ed6-4263-afde-adc7aec7b14f",
         "attributes": {}
+      },
+      {
+        "id": "9afee7f5-0f4b-48c2-95c1-d9a096f378e2",
+        "name": "staff",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "22f9b314-8ed6-4263-afde-adc7aec7b14f",
+        "attributes": {}
+      },
+      {
+        "id": "39d88147-02a7-40b0-a238-fd87fb3ad56d",
+        "name": "customer",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "22f9b314-8ed6-4263-afde-adc7aec7b14f",
+        "attributes": {}
       }
     ],
     "client": {
@@ -302,8 +320,8 @@
         }
       ],
       "security-admin-console": [],
-      "admin-cli": [],
       "ddd-server": [],
+      "admin-cli": [],
       "account-console": [],
       "broker": [
         {
@@ -705,6 +723,7 @@
         "oidc.ciba.grant.enabled": "false",
         "client.secret.creation.time": "1740975562",
         "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
@@ -741,6 +760,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
+        "*",
+        "/*",
         "http://localhost:5173"
       ],
       "webOrigins": [
@@ -790,7 +811,8 @@
         "phone",
         "organization",
         "offline_access",
-        "microprofile-jwt"
+        "microprofile-jwt",
+        "untrusted-audience"
       ]
     },
     {
@@ -1605,13 +1627,13 @@
       },
       "protocolMappers": [
         {
-          "id": "090ed145-5a1a-479a-856e-815df005280f",
-          "name": "ddd-web-as-audience",
+          "id": "f9892d8b-9b35-4a88-b4b0-5f8a31727dd9",
+          "name": "ddd-server-as-audience",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-audience-mapper",
           "consentRequired": false,
           "config": {
-            "included.client.audience": "ddd-web",
+            "included.client.audience": "ddd-server",
             "id.token.claim": "false",
             "lightweight.claim": "false",
             "access.token.claim": "true",
@@ -1636,7 +1658,8 @@
     "address",
     "phone",
     "microprofile-jwt",
-    "organization"
+    "organization",
+    "untrusted-audience"
   ],
   "browserSecurityHeaders": {
     "contentSecurityPolicyReportOnly": "",
@@ -1715,14 +1738,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-attribute-mapper",
-            "oidc-usermodel-property-mapper",
-            "oidc-address-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper",
             "oidc-full-name-mapper",
-            "saml-role-list-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "saml-user-attribute-mapper",
+            "saml-user-property-mapper",
+            "saml-role-list-mapper",
+            "oidc-address-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper"
           ]
         }
       },
@@ -1742,14 +1765,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-usermodel-property-mapper",
-            "saml-role-list-mapper",
-            "saml-user-attribute-mapper",
-            "saml-user-property-mapper",
-            "oidc-address-mapper",
             "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-attribute-mapper",
+            "saml-role-list-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-address-mapper",
+            "oidc-full-name-mapper",
             "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper"
+            "saml-user-property-mapper"
           ]
         }
       },
