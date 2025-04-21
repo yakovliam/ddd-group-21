@@ -6,6 +6,7 @@ import useEasyAuth from "@/hooks/use-easy-auth";
 import Loading from "./components/loading/Loading";
 import LoginPage from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
+import CustomerPage from "./pages/customer/CustomerPage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/staff" element={<h1>Staff</h1>} />
-              <Route path="/customer" element={<h1>Customer</h1>} />
+              <Route path="/customer" element={<CustomerPage />} />
             </Route>
           </Route>
         </Route>
