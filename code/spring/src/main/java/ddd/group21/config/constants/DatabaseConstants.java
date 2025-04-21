@@ -1,4 +1,4 @@
-package com.example.config.constants;
+package ddd.group21.config.constants;
 
 public class DatabaseConstants {
 

@@ -3,21 +3,8 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="0" author="anonymous">
-        <sql>CREATE
-        EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
-    </changeSet>
 
-    <changeSet id="1" author="anonymous">
-        <createTable tableName="user">
-            <column name="id" type="UUID" defaultValueComputed="uuid_generate_v4()">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-    </changeSet>
+
 </databaseChangeLog>
