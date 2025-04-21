@@ -12,7 +12,14 @@ const HomePage = () => {
           navigate("/login");
         }}
       >
-        Go To Login
+        Login
+      </Button>
+      <Button
+        onClick={() => {
+          navigate("/register");
+        }}
+      >
+        Register
       </Button>
     </div>
   );
