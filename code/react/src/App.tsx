@@ -5,7 +5,6 @@ import Layout from "@/components/auth/layout/Layout";
 import useEasyAuth from "@/hooks/use-easy-auth";
 import Loading from "./components/loading/Loading";
 import LoginPage from "./pages/login/LoginPage";
-import Register from "./pages/register/Register";
 
 function App() {
   return (
@@ -17,9 +16,6 @@ function App() {
 
             <Route element={<ReverseProtectedRoute />}>
               <Route path="/login" element={<LoginPage />} />
-            </Route>
-            <Route element={<ReverseProtectedRoute />}>
-              <Route path="/register" element={<Register />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>

@@ -86,6 +86,16 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <sql>
+            alter table address
+                add constraint address_address_type_check check (
+                    (address_type)::text = ANY (
+                (
+                ARRAY ['DELIVERY':: character varying, 'PAYMENT':: character varying, 'STAFF':: character varying, 'WAREHOUSE':: character varying, 'SUPPLIER':: character varying]
+                )::text[]
+                )
+                );
+        </sql>
 
         <createTable tableName="creditcard">
             <column name="card_id" type="BIGINT" autoIncrement="true">
@@ -222,6 +232,17 @@
             </column>
         </createTable>
 
+        <sql>
+            alter table customerorder
+                add constraint customerorder_status_check check (
+                    (status)::text = ANY (
+                (
+                ARRAY ['ISSUED':: character varying, 'SENT':: character varying, 'RECEIVED':: character varying, 'CANCELLED':: character varying]
+                )::text []
+                )
+                )
+        </sql>
+
         <createTable tableName="deliveryplan">
             <column name="delivery_id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -245,6 +266,17 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <sql>
+            alter table deliveryplan
+                add constraint deliveryplan_delivery_type_check check (
+                    (delivery_type)::text = ANY (
+                (
+                ARRAY ['STANDARD':: character varying, 'EXPRESS':: character varying]
+                )::text []
+                )
+                )
+        </sql>
 
         <createTable tableName="orderitem">
             <column name="order_item_id" type="BIGINT" autoIncrement="true">
