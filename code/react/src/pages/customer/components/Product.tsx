@@ -11,9 +11,9 @@ const Product = (props: Props) => {
   return (
     <div
       key={props.key}
-      className="w-1/4 h-1/4 bg-gray-200 m-2 rounded-lg shadow-lg flex justify-center items-center"
+      className=" bg-gray-200 m-2 rounded-lg shadow-lg flex justify-center max-h-[400px]"
     >
-      <div className="w-3/4 h-3/4 bg-white rounded-lg shadow-md flex justify-center items-center">
+      <div className=" bg-white rounded-lg shadow-md flex justify-center items-center flex-col p-3">
         <img
           src={props.img}
           alt={props.name}

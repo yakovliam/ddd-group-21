@@ -14,21 +14,21 @@ const Shop = (props: Props) => {
     },
     {
       key: 2,
-      name: "Product 2",
+      name: "Apple",
       price: 20,
-      img: "https://via.placeholder.com/150",
+      img: "https://cdn.britannica.com/22/187222-050-07B17FB6/apples-on-a-tree-branch.jpg",
     },
     {
       key: 3,
-      name: "Product 3",
+      name: "Grapes",
       price: 30,
-      img: "https://via.placeholder.com/150",
+      img: "https://img.imageboss.me/fourwinds/width/425/dpr:2/shop/products/rubyseedlessgrapes.jpg?v=1729716408",
     },
     {
       key: 4,
-      name: "Product 4",
+      name: "Pineapple",
       price: 40,
-      img: "https://via.placeholder.com/150",
+      img: "https://images.immediate.co.uk/production/volatile/sites/30/2024/06/Pineapple-01-5562ee3.jpg?quality=90&resize=440,400",
     },
   ];
   return (

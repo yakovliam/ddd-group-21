@@ -7,29 +7,31 @@ import Loading from "./components/loading/Loading";
 import LoginPage from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
 import CustomerPage from "./pages/customer/CustomerPage";
-
+import StateProvidor from "./state/StateProvidor";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<AuthenticationContextWrapper />}>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
+      <StateProvidor>
+        <Routes>
+          <Route element={<AuthenticationContextWrapper />}>
+            <Route element={<Layout />}>
+              <Route path="/" element={<HomePage />} />
 
-            <Route element={<ReverseProtectedRoute />}>
-              <Route path="/login" element={<LoginPage />} />
-            </Route>
-            <Route element={<ReverseProtectedRoute />}>
-              <Route path="/register" element={<Register />} />
-            </Route>
+              <Route element={<ReverseProtectedRoute />}>
+                <Route path="/login" element={<LoginPage />} />
+              </Route>
+              <Route element={<ReverseProtectedRoute />}>
+                <Route path="/register" element={<Register />} />
+              </Route>
 
-            <Route element={<ProtectedRoute />}>
-              <Route path="/staff" element={<h1>Staff</h1>} />
-              <Route path="/customer" element={<CustomerPage />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/staff" element={<h1>Staff</h1>} />
+                <Route path="/customer" element={<CustomerPage />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </StateProvidor>
     </BrowserRouter>
   );
 }
