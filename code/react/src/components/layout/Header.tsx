@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 const Header = () => {
   const { authContext } = useEasyAuth();
-  const roles = useAuthRoles();
+  const { hasRole } = useAuthRoles();
   const navigate = useNavigate();
 
   const logout = () => {
@@ -14,8 +14,8 @@ const Header = () => {
   };
 
   const isStaff = useMemo(() => {
-    return roles.includes("staff");
-  }, [roles]);
+    return hasRole("staff");
+  }, [hasRole]);
 
   return (
     <div className="flex items-center justify-between border-b border-gray-300 p-4">

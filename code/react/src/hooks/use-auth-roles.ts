@@ -10,7 +10,13 @@ interface JwtPayload {
   };
 }
 
-const useAuthRoles = (): Roles => {
+type UseAuthRolesHasRole = (role: string) => boolean;
+type UseAuthRolesHasAnyRole = (roles: Roles) => boolean;
+
+const useAuthRoles = (): {
+  hasRole: UseAuthRolesHasRole;
+  hasAnyRole: UseAuthRolesHasAnyRole;
+} => {
   const { user } = useEasyAuth();
 
   const decode = (token: string) => {
@@ -18,15 +24,27 @@ const useAuthRoles = (): Roles => {
     return decoded.realm_access.roles;
   };
 
-  useEffect(() => {
-    console.log(JSON.stringify(user?.profile));
-  }, [user]);
+  const hasRole = (role: string): boolean => {
+    if (!user) {
+      return false;
+    }
 
-  if (!user) {
-    return [];
-  }
+    return decode(user.access_token).includes(role);
+  };
 
-  return decode(user.access_token);
+  const hasAnyRole = (roles: Roles): boolean => {
+    if (!user) {
+      return false;
+    }
+
+    const decoded = decode(user.access_token);
+    return roles.some((role) => decoded.includes(role));
+  };
+
+  return {
+    hasRole,
+    hasAnyRole,
+  };
 };
 
 export default useAuthRoles;

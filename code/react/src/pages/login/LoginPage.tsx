@@ -6,7 +6,7 @@ const LoginPage = () => {
 
   const redirectToLogin = () => {
     authContext.signinRedirect({
-      scope: "untrusted-audience",
+      scope: "untrusted-audience openid email profile",
     });
   };
 
