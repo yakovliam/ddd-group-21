@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @CrossOrigin
@@ -22,7 +24,17 @@ public class ProductsController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<Product>> getProducts(Pageable pageable) {
+  public ResponseEntity<Page<Product>> getProducts(Pageable pageable,
+                                                   @RequestParam("name") String name) {
+    if (name != null && !name.isEmpty()) {
+      return ResponseEntity.ok(productsRepository.findByNameStartsWith(name, pageable));
+    }
+
     return ResponseEntity.ok(productsRepository.findAll(pageable));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Object> getProduct(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(productsRepository.findById(id));
   }
 }

@@ -10,6 +10,8 @@ import useAuthRoles from "@/hooks/use-auth-roles";
 import UnauthorizedPage from "@/pages/unauthorized/UnauthorizedPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useApi from "@/hooks/use-api";
+import CustomerProductSpecificPage from "./pages/customer/products/CustomerProductSpecificPage";
+import CutomerAccountPage from "./pages/customer/account/CutomerAccountPage";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,7 +24,7 @@ function App() {
     defaultOptions: {
       queries: {
         queryFn: async ({ queryKey }) => {
-          const [resource, offset, limit] = queryKey;
+          const [resource, page, limit, name] = queryKey;
           const url = `${API_URL}${resource}`;
 
           const searchParams = new URLSearchParams();
@@ -31,8 +33,12 @@ function App() {
             searchParams.set("size", String(limit));
           }
 
-          if (offset !== undefined) {
-            searchParams.set("page", String(offset));
+          if (page !== undefined) {
+            searchParams.set("page", String(page));
+          }
+
+          if (name !== undefined) {
+            searchParams.set("name", String(name));
           }
 
           return api.get(url, { searchParams }).json();
@@ -61,7 +67,15 @@ function App() {
 
                 <Route path="/customer">
                   <Route index element={<Navigate replace to="products" />} />
-                  <Route path="products" element={<CustomerProductsPage />} />
+                  <Route path="products">
+                    <Route index element={<CustomerProductsPage />} />
+                    <Route
+                      path=":id"
+                      element={<CustomerProductSpecificPage />}
+                    />
+                  </Route>
+
+                  <Route path="account" element={<CutomerAccountPage />} />
                 </Route>
               </Route>
             </Route>
