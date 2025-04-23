@@ -1,5 +1,7 @@
+import { useProductSpecific } from "@/api/api";
+import Button from "@/components/ui/Button";
+import { useCartStore } from "@/store/store";
 import { Product } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
 import {
   createColumnHelper,
   flexRender,
@@ -7,6 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useParams } from "react-router";
+import { v4 as uuidv4 } from "uuid";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -45,14 +48,13 @@ const columns = [
 ];
 
 function CustomerProductSpecificPage() {
+  const addToCart = useCartStore((state) => state.addToCart);
   const { id } = useParams();
 
-  const query = useQuery<Product>({
-    queryKey: [`/products/${id}`],
-  });
+  const { isSuccess, data: product } = useProductSpecific(id as string);
 
   const table = useReactTable({
-    data: query.data ? [query.data] : [],
+    data: product ? [product] : [],
     columns, // Column definitions
     getCoreRowModel: getCoreRowModel(), // Method to compute rows based on core data
   });
@@ -61,12 +63,33 @@ function CustomerProductSpecificPage() {
     <div className="flex flex-col items-center gap-4">
       <h1>Customer Product Page</h1>
 
+      <Button
+        onClick={() => {
+          if (!product) {
+            alert("Product not found");
+            return;
+          }
+
+          addToCart({
+            id: uuidv4(),
+            productId: String(product.id),
+            name: product.name,
+            price: product.currentPrice,
+            quantity: 1,
+          });
+
+          alert("Product added to cart");
+        }}
+      >
+        Add To Cart
+      </Button>
+
       <div className="w-full grid grid-cols-4 gap-4">
         <div className="flex flex-col items-center gap-4 col-span-1">
           <p>Product Id: {id}</p>
         </div>
         <div className="col-span-3">
-          {query.isSuccess && (
+          {isSuccess && (
             <table>
               <thead>
                 {/* Render table headers */}

@@ -1,32 +1,16 @@
+import { useOrders } from "@/api/api";
 import Input from "@/components/ui/Input";
-import useEasyAuth from "@/hooks/use-easy-auth";
-import { Customer } from "@/types/customer";
-import { CustomerOrder, CustomerOrderPage } from "@/types/customerorder";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { CustomerOrder } from "@/types/customerorder";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const CustomerOrdersPage = () => {
-  const { user } = useEasyAuth();
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
 
-  const customerQuery = useQuery<Customer[]>({
-    queryKey: [`/customers`, { keycloak_id: user?.profile.sub }],
-  });
-
-  const customer = useMemo(() => {
-    if (customerQuery.isSuccess) {
-      return customerQuery.data[0];
-    }
-  }, [customerQuery.isSuccess, customerQuery.data]);
-
-  const query = useQuery<CustomerOrderPage>({
-    queryKey: [
-      `/customers/${customer?.id}/orders`,
-      { page: page, limit: limit },
-    ],
-    enabled: !!customer,
+  const { data, isSuccess } = useOrders({
+    page,
+    limit,
   });
 
   const navigate = useNavigate();
@@ -50,9 +34,9 @@ const CustomerOrdersPage = () => {
           />
         </div>
         <div className="col-span-3">
-          {query.isSuccess && (
+          {isSuccess && (
             <div className="grid grid-cols-4 gap-4">
-              {query.data.content.map((order: CustomerOrder) => {
+              {data?.content.map((order: CustomerOrder) => {
                 return (
                   <OrderCard key={order.id} order={order} navigate={navigate} />
                 );

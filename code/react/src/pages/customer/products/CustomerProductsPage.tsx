@@ -1,6 +1,7 @@
+import { useProducts } from "@/api/api";
+import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { Product, ProductPage } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
+import { Product } from "@/types/product";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -9,8 +10,10 @@ const CustomerProductsPage = () => {
   const [limit, setLimit] = useState(10);
   const [name, setName] = useState("");
 
-  const query = useQuery<ProductPage>({
-    queryKey: ["/products", { page: page, limit: limit, name: name }],
+  const { data, isSuccess, refetch } = useProducts({
+    page,
+    limit,
+    name,
   });
 
   const navigate = useNavigate();
@@ -37,11 +40,19 @@ const CustomerProductsPage = () => {
             placeholder="Page"
             onChange={(e) => setPage(Number(e.target.value))}
           />
+
+          <Button
+            onClick={() => {
+              refetch();
+            }}
+          >
+            Search
+          </Button>
         </div>
         <div className="col-span-3">
-          {query.isSuccess && (
+          {isSuccess && (
             <div className="grid grid-cols-4 gap-4">
-              {query.data.content.map((product: Product) => {
+              {data?.content.map((product: Product) => {
                 return (
                   <ProductCard
                     key={product.id}

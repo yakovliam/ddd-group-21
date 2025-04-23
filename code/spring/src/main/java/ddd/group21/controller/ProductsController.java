@@ -2,6 +2,7 @@ package ddd.group21.controller;
 
 import ddd.group21.model.Product;
 import ddd.group21.repository.ProductsRepository;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/products")
 public class ProductsController {
 
+  private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ProductsController.class);
+
   private final ProductsRepository productsRepository;
 
   public ProductsController(ProductsRepository productsRepository) {
@@ -25,7 +28,8 @@ public class ProductsController {
 
   @GetMapping
   public ResponseEntity<Page<Product>> getProducts(Pageable pageable,
-                                                   @RequestParam("name") String name) {
+                                                   @RequestParam(name = "name", required = false)
+                                                   String name) {
     if (name != null && !name.isEmpty()) {
       return ResponseEntity.ok(productsRepository.findByNameStartsWith(name, pageable));
     }

@@ -9,39 +9,14 @@ import CustomerProductsPage from "@/pages/customer/products/CustomerProductsPage
 import useAuthRoles from "@/hooks/use-auth-roles";
 import UnauthorizedPage from "@/pages/unauthorized/UnauthorizedPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import useApi from "@/hooks/use-api";
-import CustomerProductSpecificPage from "./pages/customer/products/CustomerProductSpecificPage";
-import CutomerAccountPage from "./pages/customer/account/CutomerAccountPage";
-import CustomerOrdersPage from "./pages/customer/orders/CustomerOrdersPage";
-
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProductSpecificPage";
+import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
+import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
+import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
 
 function App() {
-  // ky api
-  const api = useApi();
-
-  // react-query client
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        queryFn: async ({ queryKey }) => {
-          const [resource, searchParamsObject] = queryKey;
-          const url = `${API_URL}${resource}`;
-
-          const searchParams = new URLSearchParams();
-
-          if (searchParamsObject) {
-            Object.entries(searchParamsObject).forEach(([key, value]) => {
-              searchParams.set(key, value);
-            });
-          }
-
-          return api.get(url, { searchParams }).json();
-        },
-      },
-    },
-  });
-
+  const queryClient = new QueryClient();
+  
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -75,6 +50,8 @@ function App() {
                     <Route index element={<CustomerOrdersPage />} />
                     <Route path=":id" element={<p>Customer order details</p>} />
                   </Route>
+
+                  <Route path="cart" element={<CustomerCartPage />} />
                 </Route>
               </Route>
             </Route>

@@ -37,6 +37,10 @@ public class CustomerController {
   @GetMapping("/{id}/orders")
   public ResponseEntity<Object> getCustomerOrders(@PathVariable("id") String customerId,
                                                   Pageable pageable) {
+    if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
+      throw new RuntimeException("Invalid customer id");
+    }
+    
     return ResponseEntity.ok(
         customerOrdersRepository.getByCustomer_Id(Long.valueOf(customerId), pageable));
   }
