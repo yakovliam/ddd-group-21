@@ -4,15 +4,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "customerorder")
@@ -35,7 +39,7 @@ public class CustomerOrder {
   private OrderStatus orderStatus;
 
   @JoinColumn(name = "card_id", nullable = false)
-  @OneToOne
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
   private CreditCard creditCard;
 
   @Digits(integer = 10, fraction = 2)

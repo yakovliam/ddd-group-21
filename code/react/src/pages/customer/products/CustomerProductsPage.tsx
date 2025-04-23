@@ -10,7 +10,7 @@ const CustomerProductsPage = () => {
   const [name, setName] = useState("");
 
   const query = useQuery<ProductPage>({
-    queryKey: ["/products", page, limit, name],
+    queryKey: ["/products", { page: page, limit: limit, name: name }],
   });
 
   const navigate = useNavigate();

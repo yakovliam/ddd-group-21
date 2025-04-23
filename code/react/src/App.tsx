@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useApi from "@/hooks/use-api";
 import CustomerProductSpecificPage from "./pages/customer/products/CustomerProductSpecificPage";
 import CutomerAccountPage from "./pages/customer/account/CutomerAccountPage";
+import CustomerOrdersPage from "./pages/customer/orders/CustomerOrdersPage";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -24,21 +25,15 @@ function App() {
     defaultOptions: {
       queries: {
         queryFn: async ({ queryKey }) => {
-          const [resource, page, limit, name] = queryKey;
+          const [resource, searchParamsObject] = queryKey;
           const url = `${API_URL}${resource}`;
 
           const searchParams = new URLSearchParams();
 
-          if (limit !== undefined) {
-            searchParams.set("size", String(limit));
-          }
-
-          if (page !== undefined) {
-            searchParams.set("page", String(page));
-          }
-
-          if (name !== undefined) {
-            searchParams.set("name", String(name));
+          if (searchParamsObject) {
+            Object.entries(searchParamsObject).forEach(([key, value]) => {
+              searchParams.set(key, value);
+            });
           }
 
           return api.get(url, { searchParams }).json();
@@ -76,6 +71,10 @@ function App() {
                   </Route>
 
                   <Route path="account" element={<CutomerAccountPage />} />
+                  <Route path="orders">
+                    <Route index element={<CustomerOrdersPage />} />
+                    <Route path=":id" element={<p>Customer order details</p>} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

@@ -1,5 +1,100 @@
+import Input from "@/components/ui/Input";
+import useEasyAuth from "@/hooks/use-easy-auth";
+import { Customer } from "@/types/customer";
+import { CustomerOrder, CustomerOrderPage } from "@/types/customerorder";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router";
+
 const CustomerOrdersPage = () => {
-  return <div>CustomerOrdersPage</div>;
+  const { user } = useEasyAuth();
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+
+  const customerQuery = useQuery<Customer[]>({
+    queryKey: [`/customers`, { keycloak_id: user?.profile.sub }],
+  });
+
+  const customer = useMemo(() => {
+    if (customerQuery.isSuccess) {
+      return customerQuery.data[0];
+    }
+  }, [customerQuery.isSuccess, customerQuery.data]);
+
+  const query = useQuery<CustomerOrderPage>({
+    queryKey: [
+      `/customers/${customer?.id}/orders`,
+      { page: page, limit: limit },
+    ],
+    enabled: !!customer,
+  });
+
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <h1>Customer Orders Page</h1>
+
+      <div className="w-full grid grid-cols-4 gap-4">
+        <div className="flex flex-col items-center gap-4 col-span-1">
+          <Input
+            placeholder="Limit"
+            onChange={(e) => {
+              setLimit(Number(e.target.value));
+            }}
+          />
+
+          <Input
+            placeholder="Page"
+            onChange={(e) => setPage(Number(e.target.value))}
+          />
+        </div>
+        <div className="col-span-3">
+          {query.isSuccess && (
+            <div className="grid grid-cols-4 gap-4">
+              {query.data.content.map((order: CustomerOrder) => {
+                return (
+                  <OrderCard key={order.id} order={order} navigate={navigate} />
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const OrderCard = ({
+  order,
+  navigate,
+}: {
+  order: CustomerOrder;
+  navigate: (path: string) => void;
+}) => {
+  return (
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="p-5">
+        <h5
+          className="mb-2 text-2xl font-bold tracking-tight text-blue-500 underline dark:text-white cursor-pointer"
+          onClick={() => {
+            navigate("/customer/orders/" + order.id);
+          }}
+        >
+          {order.id}
+        </h5>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          ${order.totalAmount}
+        </p>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          {new Date(order.orderDate).toDateString()}
+        </p>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          STATUS: {order.orderStatus}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default CustomerOrdersPage;

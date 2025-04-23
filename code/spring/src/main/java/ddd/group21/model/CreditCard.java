@@ -36,7 +36,7 @@ public class CreditCard {
 
   @JoinColumn(name = "payment_address_id", nullable = false)
   @OneToOne
-  private Address paymentAddressId;
+  private Address paymentAddress;
 
   @Column(name = "is_default", nullable = false)
   private boolean isDefault;
@@ -89,12 +89,12 @@ public class CreditCard {
     this.cvv = cvv;
   }
 
-  public Address getPaymentAddressId() {
-    return paymentAddressId;
+  public Address getPaymentAddress() {
+    return paymentAddress;
   }
 
-  public void setPaymentAddressId(Address paymentAddressId) {
-    this.paymentAddressId = paymentAddressId;
+  public void setPaymentAddress(Address paymentAddress) {
+    this.paymentAddress = paymentAddress;
   }
 
   public boolean isDefault() {
