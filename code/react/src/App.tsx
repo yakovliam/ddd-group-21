@@ -13,9 +13,12 @@ import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProdu
 import CutomerAccountPage from "@/pages/customer/account/CustomerAccountPage";
 import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
 import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
-import StaffHomePage from "./pages/staff/StaffHomePage";
 
 import CustomerWrapper from "./components/layout/CustomerWrapper";
+import StaffWrapper from "./components/layout/StaffWrapper";
+import Product from "./pages/staff/product/Product";
+import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
+import Processing from "./pages/staff/processing/Processing";
 
 function App() {
   const queryClient = new QueryClient();
@@ -35,7 +38,27 @@ function App() {
 
               <Route element={<ProtectedRoute />}>
                 <Route element={<RoleProtectedRoute roles={["staff"]} />}>
-                  <Route path="/staff" element={<StaffHomePage />} />
+                  <Route path="/staff" element={<StaffWrapper />}>
+                    <Route index element={<Navigate to={"products"} />} />
+                    <Route path="product">
+                      <Route index element={<Product />} />
+                      <Route
+                        path=":id"
+                        element={<p>Staff PRoduct specific page</p>}
+                      />
+                    </Route>
+                    <Route path="customerinfo">
+                      <Route index element={<CustomerInfo />} />
+                      <Route
+                        path=":id"
+                        element={<p>Staff customerinfo ind</p>}
+                      />
+                    </Route>
+                    <Route path="processing">
+                      <Route index element={<Processing />} />
+                      <Route path=":id" element={<p>Staff processing ind</p>} />
+                    </Route>
+                  </Route>
                 </Route>
 
                 <Route path="/customer" element={<CustomerWrapper />}>
