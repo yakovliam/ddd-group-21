@@ -16,9 +16,10 @@ import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
 
 import CustomerWrapper from "./components/layout/CustomerWrapper";
 import StaffWrapper from "./components/layout/StaffWrapper";
-import Product from "./pages/staff/product/Product";
+
 import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
 import Processing from "./pages/staff/processing/Processing";
+import Products from "./pages/staff/product/Products";
 
 function App() {
   const queryClient = new QueryClient();
@@ -41,7 +42,7 @@ function App() {
                   <Route path="/staff" element={<StaffWrapper />}>
                     <Route index element={<Navigate to={"products"} />} />
                     <Route path="product">
-                      <Route index element={<Product />} />
+                      <Route index element={<Products />} />
                       <Route
                         path=":id"
                         element={<p>Staff PRoduct specific page</p>}
