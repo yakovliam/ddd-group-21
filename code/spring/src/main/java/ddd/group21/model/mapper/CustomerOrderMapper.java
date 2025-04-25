@@ -11,8 +11,8 @@ public interface CustomerOrderMapper {
 
   CustomerOrderMapper INSTANCE = Mappers.getMapper(CustomerOrderMapper.class);
 
-  @Mapping(target = "customerId", source = "customer.id")
-  @Mapping(target = "creditCardId", source = "customer.creditCard.id")
+  @Mapping(target = "customerId", source = "customerOrder.customer.id")
+  @Mapping(target = "creditCardId", source = "customerOrder.creditCard.id")
   CustomerOrderDTO customerOrderToCustomerOrderDTO(CustomerOrder customerOrder,
                                                    CycleAvoidingMappingContext context);
 }

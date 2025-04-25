@@ -13,13 +13,16 @@ public interface CreditCardMapper {
 
   CreditCardMapper INSTANCE = Mappers.getMapper(CreditCardMapper.class);
 
-  @Mapping(target = "customerId", source = "customer.id")
-  @Mapping(target = "paymentAddressId", source = "paymentAddress.id")
+  @Mapping(target = "customerId", source = "creditCard.customer.id")
+  @Mapping(target = "paymentAddressId", source = "creditCard.paymentAddress.id")
+  @Mapping(target = "default", source = "creditCard.default")
   CreditCardDTO creditCardToCreditCardDTO(CreditCard creditCard,
                                           CycleAvoidingMappingContext context);
 
   @Mapping(target = "customer", source = "customer")
   @Mapping(target = "paymentAddress", source = "paymentAddress")
+  @Mapping(target = "id", source = "creditCardDTO.id")
+  @Mapping(target = "default", source = "creditCardDTO.default")
   CreditCard creditCardDTOToCreditCard(CreditCardDTO creditCardDTO, Customer customer,
                                        Address paymentAddress);
 }

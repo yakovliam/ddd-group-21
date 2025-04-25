@@ -13,8 +13,9 @@ public interface AddressMapper {
   AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);
 
   @Mapping(target = "userAccountId", source = "userAccount.id")
-  AddressDTO addressToAddressDTO(Address address, CycleAvoidingMappingContext context);
+  AddressDTO addressToAddressDTO(Address userAccount, CycleAvoidingMappingContext context);
 
   @Mapping(target = "userAccount", source = "userAccountEntity")
+  @Mapping(target = "id", source = "addressDTO.id")
   Address addressDTOToAddress(AddressDTO addressDTO, UserAccount userAccountEntity);
 }
