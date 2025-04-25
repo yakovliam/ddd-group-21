@@ -77,7 +77,7 @@ public class CustomersOrdersController {
 
 
   @PostMapping("/{orderId}")
-  public ResponseEntity<Object> updateOrderStatus(@PathVariable("id") String customerId,
+  public ResponseEntity<Object> createOrder(@PathVariable("id") String customerId,
                                                   @PathVariable("orderId") String orderId,
                                                   @RequestBody CartDTO cartDTO) {
     if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
