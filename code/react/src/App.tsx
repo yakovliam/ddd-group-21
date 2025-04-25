@@ -10,10 +10,17 @@ import useAuthRoles from "@/hooks/use-auth-roles";
 import UnauthorizedPage from "@/pages/unauthorized/UnauthorizedPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProductSpecificPage";
-import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
+import CutomerAccountPage from "@/pages/customer/account/CustomerAccountPage";
 import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
 import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
 import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
+
+import CustomerWrapper from "./components/layout/CustomerWrapper";
+import StaffWrapper from "./components/layout/StaffWrapper";
+
+import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
+import Processing from "./pages/staff/processing/Processing";
+import Products from "./pages/staff/product/Products";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,11 +40,31 @@ function App() {
 
               <Route element={<ProtectedRoute />}>
                 <Route element={<RoleProtectedRoute roles={["staff"]} />}>
-                  <Route path="/staff" element={<h1>Staff</h1>} />
+                  <Route path="/staff" element={<StaffWrapper />}>
+                    <Route index element={<Navigate to={"products"} />} />
+                    <Route path="product">
+                      <Route index element={<Products />} />
+                      <Route
+                        path=":id"
+                        element={<p>Staff PRoduct specific page</p>}
+                      />
+                    </Route>
+                    <Route path="customerinfo">
+                      <Route index element={<CustomerInfo />} />
+                      <Route
+                        path=":id"
+                        element={<p>Staff customerinfo ind</p>}
+                      />
+                    </Route>
+                    <Route path="processing">
+                      <Route index element={<Processing />} />
+                      <Route path=":id" element={<p>Staff processing ind</p>} />
+                    </Route>
+                  </Route>
                 </Route>
 
-                <Route path="/customer">
-                  <Route index element={<Navigate replace to="products" />} />
+                <Route path="/customer" element={<CustomerWrapper />}>
+                  <Route index element={<Navigate to={"products"} />} />
                   <Route path="products">
                     <Route index element={<CustomerProductsPage />} />
                     <Route
