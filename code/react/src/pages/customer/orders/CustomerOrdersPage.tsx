@@ -1,5 +1,5 @@
-import { useOrders } from "@/api/api";
 import Input from "@/components/ui/Input";
+import { useOrders } from "@/hooks/use-api";
 import { CustomerOrder } from "@/types/customerorder";
 import { useState } from "react";
 import { useNavigate } from "react-router";

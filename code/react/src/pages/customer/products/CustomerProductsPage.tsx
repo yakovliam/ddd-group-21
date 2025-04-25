@@ -1,6 +1,6 @@
-import { useProducts } from "@/api/api";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { useProducts } from "@/hooks/use-api";
 import { Product } from "@/types/product";
 import { useState } from "react";
 import { useNavigate } from "react-router";

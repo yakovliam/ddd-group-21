@@ -1,5 +1,5 @@
-import { useProductSpecific } from "@/api/api";
 import Button from "@/components/ui/Button";
+import { useProductSpecific } from "@/hooks/use-api";
 import { useCartStore } from "@/store/store";
 import { Product } from "@/types/product";
 import {

@@ -12,6 +12,7 @@
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-toast": "^1.2.11",
     "@tailwindcss/vite": "^4.0.9",
     "@tanstack/react-query": "^5.74.4",
     "@tanstack/react-table": "^8.21.3",
