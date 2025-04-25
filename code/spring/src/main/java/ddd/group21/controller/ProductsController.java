@@ -1,7 +1,10 @@
 package ddd.group21.controller;
 
-import ddd.group21.model.Product;
-import ddd.group21.repository.ProductsRepository;
+import ddd.group21.model.dto.ProductDTO;
+import ddd.group21.model.mapper.CycleAvoidingMappingContext;
+import ddd.group21.model.mapper.ProductMapper;
+import ddd.group21.repository.ProductRepository;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,25 +23,31 @@ public class ProductsController {
 
   private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ProductsController.class);
 
-  private final ProductsRepository productsRepository;
+  private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
-  public ProductsController(ProductsRepository productsRepository) {
-    this.productsRepository = productsRepository;
+  private final ProductRepository productRepository;
+
+  public ProductsController(ProductRepository productRepository) {
+    this.productRepository = productRepository;
   }
 
   @GetMapping
-  public ResponseEntity<Page<Product>> getProducts(Pageable pageable,
-                                                   @RequestParam(name = "name", required = false)
-                                                   String name) {
+  public ResponseEntity<Page<ProductDTO>> getProducts(Pageable pageable,
+                                                      @RequestParam(name = "name", required = false)
+                                                      String name) {
     if (name != null && !name.isEmpty()) {
-      return ResponseEntity.ok(productsRepository.findByNameStartsWith(name, pageable));
+      return ResponseEntity.ok(productRepository.findByNameStartsWith(name, pageable).map(
+          product -> productMapper.productToProductDTO(product,
+              new CycleAvoidingMappingContext())));
     }
 
-    return ResponseEntity.ok(productsRepository.findAll(pageable));
+    return ResponseEntity.ok(productRepository.findAll(pageable).map(
+        product -> productMapper.productToProductDTO(product, new CycleAvoidingMappingContext())));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> getProduct(@PathVariable("id") Long id) {
-    return ResponseEntity.ok(productsRepository.findById(id));
+  public ResponseEntity<Optional<ProductDTO>> getProduct(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(productRepository.findById(id).map(
+        product -> productMapper.productToProductDTO(product, new CycleAvoidingMappingContext())));
   }
 }

@@ -15,8 +15,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "customerorder")
