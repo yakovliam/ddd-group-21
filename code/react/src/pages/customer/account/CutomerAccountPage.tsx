@@ -6,7 +6,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-const CustomerAccountPage = () => {
+const CutomerAccountPage = () => {
   const { user } = useEasyAuth();
 
   const columns = [
@@ -46,7 +46,9 @@ const CustomerAccountPage = () => {
   return (
     <div className="flex flex-col items-center gap-4">
       <h1>Customer Account Page</h1>
-      <Button onClick={goToAccountManagmentPage}>Edit Account</Button>
+      <Button onClick={goToAccountManagmentPage}>
+        Edit Account
+      </Button>
 
       <div className="w-full flex items-center">
         <table>
@@ -84,4 +86,4 @@ const CustomerAccountPage = () => {
     </div>
   );
 };
-export default CustomerAccountPage;
+export default CutomerAccountPage;
