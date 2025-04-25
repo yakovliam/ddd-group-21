@@ -25,25 +25,47 @@ const Header = () => {
       {authContext.user && (
         <div className="flex items-center gap-4">
           <p>{authContext.user?.profile.name}</p>
-          <div>
+
+          {isStaff ? (
             <Button
               onClick={() => {
-                navigate("/customer");
+                navigate("/staff");
               }}
             >
-              Customer
+              Staff
             </Button>
-            {isStaff && (
+          ) : (
+            <div>
               <Button
                 onClick={() => {
-                  navigate("/staff");
+                  navigate("/customer/orders");
                 }}
               >
-                Staff
+                Orders
               </Button>
-            )}
-          </div>
-
+              <Button
+                onClick={() => {
+                  navigate("/customer/account");
+                }}
+              >
+                Account
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate("/customer/products");
+                }}
+              >
+                Products
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate("/customer/cart");
+                }}
+              >
+                Cart
+              </Button>
+            </div>
+          )}
           <Button onClick={logout}>Logout</Button>
         </div>
       )}

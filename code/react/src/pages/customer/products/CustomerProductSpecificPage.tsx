@@ -38,10 +38,7 @@ const columns = [
   columnHelper.accessor("imageUrl", {
     header: "Image",
     cell: (info) => (
-      <img
-        alt="image"
-        src={info.getValue() + "?random=" + info.row.original.weight}
-      />
+      <img src={info.getValue() + "?random=" + info.row.original.weight} />
     ),
   }),
   columnHelper.accessor("category", {
