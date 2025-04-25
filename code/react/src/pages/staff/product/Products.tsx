@@ -9,7 +9,20 @@ const Products = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [name, setName] = useState("");
-
+  const [newProduct, setNewProduct] = useState<Product>({
+    id: 0,
+    name: "",
+    brand: "",
+    description: "",
+    size: "",
+    weight: 0,
+    currentPrice: 0,
+    imageUrl: "",
+    category: {
+      id: 0,
+      categoryName: "",
+    },
+  });
   const { data, isSuccess, refetch } = useProducts({
     page,
     limit,
@@ -63,6 +76,66 @@ const Products = () => {
               })}
             </div>
           )}
+        </div>
+      </div>
+      <div>
+        <div>Create new Product</div>
+        <div className="flex flex-col items-center gap-4 col-span-1">
+          <Input
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+            placeholder="brand name"
+          />
+
+          <Input
+            placeholder="Category id"
+            type="number"
+            onChange={(e) =>
+              setNewProduct({
+                ...newProduct,
+                category: { ...newProduct.category, id: e.target.value },
+              })
+            }
+          />
+
+          <Input
+            placeholder="description"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Input
+            placeholder="size"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Input
+            placeholder="weight"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Input
+            placeholder="price"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Input
+            placeholder="imageUrl"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Input
+            placeholder="product type"
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <Button onClick={() => {}}>Create NewProduct</Button>
         </div>
       </div>
     </div>
