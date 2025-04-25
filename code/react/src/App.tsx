@@ -13,10 +13,11 @@ import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProdu
 import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
 import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
 import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
+import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
 
 function App() {
   const queryClient = new QueryClient();
-  
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -52,6 +53,11 @@ function App() {
                   </Route>
 
                   <Route path="cart" element={<CustomerCartPage />} />
+
+                  <Route
+                    path="creditcards"
+                    element={<CustomerCreditCardsPage />}
+                  />
                 </Route>
               </Route>
             </Route>

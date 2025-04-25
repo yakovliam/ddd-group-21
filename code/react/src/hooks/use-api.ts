@@ -6,6 +6,7 @@ import { Product, ProductPage } from "@/types/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cart } from "@/types/cart";
+import { CreditCard } from "@/types/creditcard";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -148,7 +149,7 @@ export const useOrders = ({ page, limit }: PageableProps) => {
   };
 
   const { data, isSuccess, refetch } = useQuery({
-    queryKey: [`orders/${customerId}`],
+    queryKey: [`orders`],
     queryFn: () => fetchOrders(),
   });
 
@@ -196,4 +197,32 @@ export const useSubmitOrder = (
   });
 
   return mutation;
+};
+
+export const useCreditCards = () => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const fetchCreditCards = async (): Promise<CreditCard[]> => {
+    const response = await api
+      .get(`${API_URL}/customers/${customerId}/creditcards`)
+      .json();
+
+    return response as CreditCard[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["credit-cards"],
+    queryFn: () => fetchCreditCards(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
 };
