@@ -1,5 +1,6 @@
 package ddd.group21.model;
 
+import ddd.group21.model.dto.ProductDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,6 +57,23 @@ public class Product {
 
   @Column(name = "product_type", nullable = false)
   private String productType;
+
+  public Product(ProductDTO dto) {
+    this.category = dto.getCategory(); // assuming ProductCategory is an Entity or Enum
+    this.name = dto.getName();
+    this.brand = dto.getBrand();
+    this.description = dto.getDescription();
+    this.size = dto.getSize();
+    this.weight = dto.getWeight();
+    this.currentPrice = dto.getCurrentPrice();
+    this.imageUrl = dto.getImageUrl();
+    this.creationDate = dto.getCreationDate(); // or you can set it to "now()" if needed
+    this.lastUpdated = dto.getLastUpdated(); // same here
+    this.productType = dto.getProductType();
+  }
+
+  public Product() {
+  }
 
   public Long getId() {
     return id;

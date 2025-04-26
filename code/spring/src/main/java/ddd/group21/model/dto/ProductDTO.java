@@ -143,4 +143,22 @@ public class ProductDTO {
   public void setProductType(String productType) {
     this.productType = productType;
   }
+
+  @Override
+  public String toString() {
+    return "ProductDTO{" +
+            "id=" + id +
+            ", category=" + (category != null ? category.getId() : null) +
+            ", name='" + name + '\'' +
+            ", brand='" + brand + '\'' +
+            ", description='" + description + '\'' +
+            ", size='" + size + '\'' +
+            ", weight=" + weight +
+            ", currentPrice=" + currentPrice +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", creationDate=" + creationDate +
+            ", lastUpdated=" + lastUpdated +
+            ", productType='" + productType + '\'' +
+            '}';
+  }
 }
