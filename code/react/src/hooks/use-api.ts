@@ -290,3 +290,30 @@ export const useModifyProduct = (
 
   return mutation;
 };
+
+export const useStaffOrders = ({ page, limit }: PageableProps) => {
+  const api = useApi();
+
+  const fetchOrders = async (): Promise<CustomerOrderPage> => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("page", page.toString());
+    searchParams.set("limit", limit.toString());
+
+    const response = await api
+      .get(`${API_URL}/staff/orders`, { searchParams })
+      .json();
+
+    return response as CustomerOrderPage;
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: [`staff-orders`],
+    queryFn: () => fetchOrders(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};

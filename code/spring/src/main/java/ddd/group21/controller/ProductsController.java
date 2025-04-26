@@ -4,6 +4,7 @@ import ddd.group21.model.*;
 import ddd.group21.model.dto.CartDTO;
 import ddd.group21.model.dto.CustomerOrderDTO;
 import ddd.group21.model.dto.ProductDTO;
+import ddd.group21.model.dto.newProductDTO;
 import ddd.group21.model.mapper.CycleAvoidingMappingContext;
 import ddd.group21.model.mapper.ProductMapper;
 import ddd.group21.repository.ProductRepository;
@@ -13,8 +14,11 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
+import ddd.group21.repository.SupplierRepository;
+import ddd.group21.repository.WarehouseRepository;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +31,17 @@ import org.springframework.web.bind.annotation.*;
 public class ProductsController {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ProductsController.class);
-
+    private final WarehouseRepository warehouseRepository;
+    private final SupplierRepository supplierRepository;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     private final ProductRepository productRepository;
 
-    public ProductsController(ProductRepository productRepository) {
+    public ProductsController(WarehouseRepository warehouseRepository, SupplierRepository supplierRepository, ProductRepository productRepository) {
+        this.warehouseRepository = warehouseRepository;
+        this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
     }
-
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> getProducts(Pageable pageable,
                                                         @RequestParam(name = "name", required = false)
@@ -57,9 +63,11 @@ public class ProductsController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductDTO productDTO) {
-        System.out.println(productDTO);
-        Product newproduct = new Product(productDTO);
+    public ResponseEntity<Object> addProduct(@Valid @RequestBody newProductDTO productDTO) {
+
+//subtract capacity from ware
+        //find supplierproduct set supplier id and and product id
+        Product newproduct = ProductMapper.INSTANCE.newProductDTOToProduct(productDTO, new CycleAvoidingMappingContext());
         newproduct.setCreationDate(new Timestamp(System.currentTimeMillis()));
         newproduct.setLastUpdated(new Timestamp(System.currentTimeMillis()));
         productRepository.save(newproduct);
@@ -68,13 +76,13 @@ public class ProductsController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Object> modifyProduct(@Valid @PathVariable("id") String productid, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Object> modifyProduct(@Valid @PathVariable("id") String productid, @RequestBody newProductDTO productDTO) {
         Optional<Product> optionalProduct = productRepository.findById(Long.parseLong(productid));
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(400).body("Product " + productid + " does not exist");
         }
         System.out.println(productid);
-System.out.println(productDTO);
+        System.out.println(productDTO);
         Product existingProduct = optionalProduct.get();
 
         // Update the fields

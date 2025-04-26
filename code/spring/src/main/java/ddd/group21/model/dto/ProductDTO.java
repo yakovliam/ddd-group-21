@@ -30,6 +30,7 @@ public class ProductDTO {
 
   private String productType;
 
+
   public ProductDTO(Long id, ProductCategory category, String name, String brand,
                     String description,
                     String size, BigDecimal weight, BigDecimal currentPrice, String imageUrl,
@@ -46,6 +47,7 @@ public class ProductDTO {
     this.creationDate = creationDate;
     this.lastUpdated = lastUpdated;
     this.productType = productType;
+
   }
 
   public Long getId() {
@@ -138,10 +140,6 @@ public class ProductDTO {
 
   public String getProductType() {
     return productType;
-  }
-
-  public void setProductType(String productType) {
-    this.productType = productType;
   }
 
   @Override

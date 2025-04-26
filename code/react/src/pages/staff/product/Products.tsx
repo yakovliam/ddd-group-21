@@ -102,7 +102,8 @@ const Products = () => {
       </div>
       <div className="flex flex-row">
         <div className="m-3">
-          <div>Create new Product</div>
+          <div className="flex justify-center">Create new Product</div>
+          <div>be sure to have created a suplier and warehouse before hand</div>
           <div className="flex flex-col items-center gap-4 col-span-1">
             <Input
               onChange={(e) =>
@@ -167,7 +168,30 @@ const Products = () => {
               }
               placeholder="product type"
             />
-
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="warehouse ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="supplier ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="stock"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="unit size"
+            />
             <Button
               onClick={() => {
                 console.log("Creating new product", newProduct);
@@ -251,7 +275,24 @@ const Products = () => {
               }
               placeholder="product type"
             />
-
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="warehouse ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="supplier ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="stock"
+            />
             <Button
               onClick={() => {
                 console.log("Creating new product", newProduct);

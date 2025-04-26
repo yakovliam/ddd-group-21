@@ -21,6 +21,7 @@ import StaffWrapper from "./components/layout/StaffWrapper";
 import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
 import Processing from "./pages/staff/processing/Processing";
 import Products from "./pages/staff/product/Products";
+import Warehouses from "./pages/staff/warehouses/warehouses";
 
 function App() {
   const queryClient = new QueryClient();
@@ -42,6 +43,10 @@ function App() {
                 <Route element={<RoleProtectedRoute roles={["staff"]} />}>
                   <Route path="/staff" element={<StaffWrapper />}>
                     <Route index element={<Navigate to={"product"} />} />
+                    <Route path="warehouses">
+                      <Route index element={<Warehouses />} />
+                      <Route path=":id" element={<p>Staff warehouses ind</p>} />
+                    </Route>
                     <Route path="product">
                       <Route index element={<Products />} />
                       <Route
