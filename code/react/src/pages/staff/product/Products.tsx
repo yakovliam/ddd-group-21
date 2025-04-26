@@ -1,6 +1,10 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useCreateProduct, useProducts } from "@/hooks/use-api";
+import {
+  useCreateProduct,
+  useModifyProduct,
+  useProducts,
+} from "@/hooks/use-api";
 import { Product } from "@/types/product";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -31,6 +35,14 @@ const Products = () => {
     },
     (error) => {
       console.error("Error creating product", error);
+    }
+  );
+  const modifymutation = useModifyProduct(
+    (data) => {
+      console.log("Product updated successfully", data);
+    },
+    (error) => {
+      console.error("Error updating product", error);
     }
   );
   const { data, isSuccess, refetch } = useProducts({
@@ -88,81 +100,167 @@ const Products = () => {
           )}
         </div>
       </div>
-      <div>
-        <div>Create new Product</div>
-        <div className="flex flex-col items-center gap-4 col-span-1">
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
-            placeholder="name"
-          />
-          <Input
-            type="number"
-            onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                category: { id: Number(e.target.value), categoryName: "" },
-              })
-            }
-            placeholder="category ID"
-          />
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
-            }
-            placeholder="brand"
-          />
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, description: e.target.value })
-            }
-            placeholder="description"
-          />
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, size: e.target.value })
-            }
-            placeholder="size"
-          />
-          <Input
-            type="number"
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, weight: Number(e.target.value) })
-            }
-            placeholder="weight"
-          />
-          <Input
-            type="number"
-            onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                currentPrice: Number(e.target.value),
-              })
-            }
-            placeholder="current price"
-          />
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, imageUrl: e.target.value })
-            }
-            placeholder="image URL"
-          />
-          <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, productType: e.target.value })
-            }
-            placeholder="product type"
-          />
+      <div className="flex flex-row">
+        <div className="m-3">
+          <div>Create new Product</div>
+          <div className="flex flex-col items-center gap-4 col-span-1">
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+              placeholder="name"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  category: { id: Number(e.target.value), categoryName: "" },
+                })
+              }
+              placeholder="category ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, brand: e.target.value })
+              }
+              placeholder="brand"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, description: e.target.value })
+              }
+              placeholder="description"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, size: e.target.value })
+              }
+              placeholder="size"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, weight: Number(e.target.value) })
+              }
+              placeholder="weight"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  currentPrice: Number(e.target.value),
+                })
+              }
+              placeholder="current price"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, imageUrl: e.target.value })
+              }
+              placeholder="image URL"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="product type"
+            />
 
-          <Button
-            onClick={() => {
-              console.log("Creating new product", newProduct);
-              mutation.mutate(newProduct);
-            }}
-          >
-            Create NewProduct
-          </Button>
+            <Button
+              onClick={() => {
+                console.log("Creating new product", newProduct);
+                mutation.mutate(newProduct);
+              }}
+            >
+              Create NewProduct
+            </Button>
+          </div>
+        </div>
+        {/* update product information*/}
+        <div className="m-3">
+          <div>Update product</div>
+          <div className="flex flex-col items-center gap-4 col-span-1">
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, id: Number(e.target.value) })
+              }
+              placeholder="id"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+              placeholder="name"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  category: { id: Number(e.target.value), categoryName: "" },
+                })
+              }
+              placeholder="category ID"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, brand: e.target.value })
+              }
+              placeholder="brand"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, description: e.target.value })
+              }
+              placeholder="description"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, size: e.target.value })
+              }
+              placeholder="size"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, weight: Number(e.target.value) })
+              }
+              placeholder="weight"
+            />
+            <Input
+              type="number"
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  currentPrice: Number(e.target.value),
+                })
+              }
+              placeholder="current price"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, imageUrl: e.target.value })
+              }
+              placeholder="image URL"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="product type"
+            />
+
+            <Button
+              onClick={() => {
+                console.log("Creating new product", newProduct);
+                modifymutation.mutate(newProduct);
+              }}
+            >
+              Update Product
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -191,6 +289,7 @@ const ProductCard = ({
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {product.description}
         </p>
+        <p>{product.id}</p>
       </div>
     </div>
   );

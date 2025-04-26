@@ -41,7 +41,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route element={<RoleProtectedRoute roles={["staff"]} />}>
                   <Route path="/staff" element={<StaffWrapper />}>
-                    <Route index element={<Navigate to={"products"} />} />
+                    <Route index element={<Navigate to={"product"} />} />
                     <Route path="product">
                       <Route index element={<Products />} />
                       <Route
@@ -64,7 +64,7 @@ function App() {
                 </Route>
 
                 <Route path="/customer" element={<CustomerWrapper />}>
-                  <Route index element={<Navigate to={"product"} />} />
+                  <Route index element={<Navigate to={"products"} />} />
                   <Route path="products">
                     <Route index element={<CustomerProductsPage />} />
                     <Route

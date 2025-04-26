@@ -257,3 +257,36 @@ export const useCreateProduct = (
 
   return mutation;
 };
+export const useModifyProduct = (
+  _onSuccess: (data: string) => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const modifyProduct = async (product: CreateProduct) => {
+    const response: KyResponse = await api.post(
+      `${API_URL}/products/${product.id}`,
+      {
+        json: product,
+        throwHttpErrors: false,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to modify product: " + (await response.text()));
+    }
+
+    return (await response.json()) as string;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["modify-product"],
+    mutationFn: modifyProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
