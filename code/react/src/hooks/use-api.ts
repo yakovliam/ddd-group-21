@@ -2,7 +2,7 @@ import ky, { KyResponse } from "ky";
 import useEasyAuth from "./use-easy-auth";
 import { Customer } from "@/types/customer";
 import { CustomerOrder, CustomerOrderPage } from "@/types/customerorder";
-import { Product, ProductPage } from "@/types/product";
+import { CreateProduct, Product, ProductPage } from "@/types/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cart } from "@/types/cart";
@@ -225,4 +225,35 @@ export const useCreditCards = () => {
     isSuccess,
     refetch,
   };
+};
+
+export const useCreateProduct = (
+  _onSuccess: (data: string) => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const createProduct = async (product: CreateProduct) => {
+    const response: KyResponse = await api.post(`${API_URL}/products`, {
+      json: product,
+      throwHttpErrors: false,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create product: " + (await response.text()));
+    }
+
+    return (await response.json()) as string;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["create-product"],
+    mutationFn: createProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
 };

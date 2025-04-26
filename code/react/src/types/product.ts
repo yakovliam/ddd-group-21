@@ -10,6 +10,7 @@ export interface Product {
   currentPrice: number;
   imageUrl: string;
   category: ProductCategory;
+  productType: string;
 }
 
 export type ProductPage = {

@@ -64,7 +64,7 @@ function App() {
                 </Route>
 
                 <Route path="/customer" element={<CustomerWrapper />}>
-                  <Route index element={<Navigate to={"products"} />} />
+                  <Route index element={<Navigate to={"product"} />} />
                   <Route path="products">
                     <Route index element={<CustomerProductsPage />} />
                     <Route
