@@ -10,16 +10,10 @@ import useAuthRoles from "@/hooks/use-auth-roles";
 import UnauthorizedPage from "@/pages/unauthorized/UnauthorizedPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProductSpecificPage";
-import CutomerAccountPage from "@/pages/customer/account/CustomerAccountPage";
+import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
 import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
 import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
-
-import CustomerWrapper from "./components/layout/CustomerWrapper";
-import StaffWrapper from "./components/layout/StaffWrapper";
-
-import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
-import Processing from "./pages/staff/processing/Processing";
-import Products from "./pages/staff/product/Products";
+import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -62,8 +56,8 @@ function App() {
                   </Route>
                 </Route>
 
-                <Route path="/customer" element={<CustomerWrapper />}>
-                  <Route index element={<Navigate to={"products"} />} />
+                <Route path="/customer">
+                  <Route index element={<Navigate replace to="products" />} />
                   <Route path="products">
                     <Route index element={<CustomerProductsPage />} />
                     <Route
@@ -79,6 +73,11 @@ function App() {
                   </Route>
 
                   <Route path="cart" element={<CustomerCartPage />} />
+
+                  <Route
+                    path="creditcards"
+                    element={<CustomerCreditCardsPage />}
+                  />
                 </Route>
               </Route>
             </Route>
