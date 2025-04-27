@@ -32,11 +32,13 @@ public class newProductDTO {
     private String warehouseid;
     private String supplierid;
     private int stock;
+    private double unitsize;
+    private BigDecimal supplierprice;
 
     public newProductDTO(Long id, ProductCategory category, String name, String brand,
                       String description,
                       String size, BigDecimal weight, BigDecimal currentPrice, String imageUrl,
-                      Timestamp creationDate, Timestamp lastUpdated, String productType, Integer stock, String warehouseid, String supplierid) {
+                      Timestamp creationDate, Timestamp lastUpdated, String productType, Integer stock, String warehouseid, String supplierid, double unitsize, BigDecimal supplierprice) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -52,7 +54,8 @@ public class newProductDTO {
         this.warehouseid = warehouseid;
         this.supplierid = supplierid;
         this.stock = stock;
-
+        this.unitsize = unitsize;
+        this.supplierprice = supplierprice;
     }
 
     public Long getId() {
@@ -156,6 +159,10 @@ public class newProductDTO {
     public void setSupplierid(String supplierid) {this.supplierid = supplierid;}
     public int getStock() {return stock;}
     public void setStock(int stock) {this.stock = stock;}
+    public double getUnitsize() {return unitsize;}
+    public void setUnitsize(double unitsize) {this.unitsize = unitsize;}
+    public BigDecimal getSupplierprice() {return supplierprice;}
+    public void setSupplierprice(BigDecimal supplierprice) {this.supplierprice = supplierprice;}
     @Override
     public String toString() {
         return "ProductDTO{" +

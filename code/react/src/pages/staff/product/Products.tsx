@@ -178,7 +178,7 @@ const Products = () => {
               onChange={(e) =>
                 setNewProduct({ ...newProduct, productType: e.target.value })
               }
-              placeholder="supplier ID"
+              placeholder="supplier product ID"
             />
             <Input
               onChange={(e) =>
@@ -191,6 +191,12 @@ const Products = () => {
                 setNewProduct({ ...newProduct, productType: e.target.value })
               }
               placeholder="unit size"
+            />
+            <Input
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productType: e.target.value })
+              }
+              placeholder="supplier price"
             />
             <Button
               onClick={() => {
