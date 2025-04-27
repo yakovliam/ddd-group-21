@@ -1,4 +1,4 @@
-import { useProducts } from "@/api/api";
+import { useProducts } from "@/hooks/use-api";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { Product } from "@/types/product";
@@ -94,7 +94,7 @@ const Products = () => {
             onChange={(e) =>
               setNewProduct({
                 ...newProduct,
-                category: { ...newProduct.category, id: e.target.value },
+                category: { ...newProduct.category, id: Number(e.target.value) },
               })
             }
           />

@@ -4,13 +4,13 @@ import java.util.Set;
 
 public class CartDTO {
 
-  private final Set<CartItemDTO> cartItemDTOS;
+  private final Set<CartItemDTO> cartItems;
 
-  public CartDTO(Set<CartItemDTO> cartItemDTOS) {
-    this.cartItemDTOS = cartItemDTOS;
+  public CartDTO(Set<CartItemDTO> cartItems) {
+    this.cartItems = cartItems;
   }
 
   public Set<CartItemDTO> getCartItems() {
-    return cartItemDTOS;
+    return cartItems;
   }
 }

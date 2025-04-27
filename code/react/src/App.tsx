@@ -11,8 +11,10 @@ import UnauthorizedPage from "@/pages/unauthorized/UnauthorizedPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CustomerProductSpecificPage from "@/pages/customer/products/CustomerProductSpecificPage";
 import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
+import CutomerAccountPage from "@/pages/customer/account/CutomerAccountPage";
 import CustomerOrdersPage from "@/pages/customer/orders/CustomerOrdersPage";
 import CustomerCartPage from "@/pages/customer/cart/CustomerCartPage";
+import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
 import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
 
 function App() {
@@ -58,6 +60,8 @@ function App() {
 
                 <Route path="/customer">
                   <Route index element={<Navigate replace to="products" />} />
+                <Route path="/customer">
+                  <Route index element={<Navigate replace to="products" />} />
                   <Route path="products">
                     <Route index element={<CustomerProductsPage />} />
                     <Route
@@ -73,6 +77,11 @@ function App() {
                   </Route>
 
                   <Route path="cart" element={<CustomerCartPage />} />
+
+                  <Route
+                    path="creditcards"
+                    element={<CustomerCreditCardsPage />}
+                  />
 
                   <Route
                     path="creditcards"

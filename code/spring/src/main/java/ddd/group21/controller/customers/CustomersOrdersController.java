@@ -6,6 +6,7 @@ import ddd.group21.model.CustomerOrder;
 import ddd.group21.model.OrderStatus;
 import ddd.group21.model.dto.CartDTO;
 import ddd.group21.model.dto.CustomerOrderDTO;
+import ddd.group21.model.json.MessageResponse;
 import ddd.group21.model.mapper.CustomerOrderMapper;
 import ddd.group21.model.mapper.CycleAvoidingMappingContext;
 import ddd.group21.repository.CreditCardRepository;
@@ -76,25 +77,15 @@ public class CustomersOrdersController {
   }
 
 
-  @PostMapping("/{orderId}")
+  @PostMapping
   public ResponseEntity<Object> createOrder(@PathVariable("id") String customerId,
-                                                  @PathVariable("orderId") String orderId,
-                                                  @RequestBody CartDTO cartDTO) {
+                                            @RequestBody CartDTO cartDTO) {
     if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
       return ResponseEntity.status(400).body("Invalid customer id");
     }
 
     if (cartDTO == null || cartDTO.getCartItems() == null || cartDTO.getCartItems().isEmpty()) {
       return ResponseEntity.status(400).body("Cart is empty");
-    }
-
-    if (orderId == null || orderId.isEmpty() || !orderId.matches("\\d+")) {
-      return ResponseEntity.status(400).body("Invalid order id");
-    }
-
-    // check if the orderId already exists. if so, 400.
-    if (customerOrdersRepository.existsById(Long.parseLong(orderId))) {
-      return ResponseEntity.status(400).body("Order " + orderId + " already exists");
     }
 
     Optional<Customer> customer = customersRepository.findById(Long.parseLong(customerId));
@@ -128,8 +119,9 @@ public class CustomersOrdersController {
     customerOrder.setTotalAmount(total);
     customerOrder.setCreditCard(creditCard);
 
-    CustomerOrderDTO customerOrderDTO = customerOrderMapper.customerOrderToCustomerOrderDTO(
-        customerOrder, new CycleAvoidingMappingContext());
+    CustomerOrderDTO customerOrderDTO =
+        customerOrderMapper.customerOrderToCustomerOrderDTO(customerOrder,
+            new CycleAvoidingMappingContext());
 
     customerOrdersRepository.save(customerOrder);
 
