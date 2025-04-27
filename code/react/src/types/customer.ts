@@ -1,8 +1,6 @@
-import { UserAccount } from "./useraccount";
-
 export interface Customer {
   id: number;
-  userAccount: UserAccount;
+  userAccountId: number;
   firstName: string;
   lastName: string;
   accountBalance: number;

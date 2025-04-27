@@ -15,6 +15,9 @@ import StaffWrapper from "@/components/layout/StaffWrapper";
 import StaffProductsPage from "./pages/staff/products/StaffProductsPage";
 import CutomerAccountPage from "./pages/customer/account/CutomerAccountPage";
 import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
+import CustomerWrapper from "./components/layout/CustomerWrapper";
+import CustomerCartPage from "./pages/customer/cart/CustomerCartPage";
+import StaffProductDeletePage from "./pages/staff/products/StaffProductDeletePage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,56 +36,54 @@ function App() {
               </Route>
 
               <Route element={<ProtectedRoute />}>
-                <Route element={<RoleProtectedRoute roles={["staff"]} />}>
-                  <Route path="/staff" element={<StaffWrapper />}>
-                    <Route index element={<Navigate to={"product"} />} />
-                    <Route path="product">
-                      <Route index element={<StaffProductsPage />} />
-                      <Route
-                        path=":id"
-                        element={<p>Staff Product specific page</p>}
-                      />
-                    </Route>
-                    <Route path="customerinfo">
-                      <Route index element={<p>Staff customerinfo</p>} />
-                      <Route
-                        path=":id"
-                        element={<p>Staff customerinfo id</p>}
-                      />
-                    </Route>
-                    <Route path="processing">
-                      <Route index element={<p>Staff processing</p>} />
-                      <Route path=":id" element={<p>Staff processing id</p>} />
-                    </Route>
+                <Route
+                  path="/staff"
+                  element={
+                    <RoleProtectedRoute roles={["staff"]}>
+                      <StaffWrapper />
+                    </RoleProtectedRoute>
+                  }
+                >
+                  <Route index element={<Navigate to={"products"} />} />
+                  <Route path="products">
+                    <Route index element={<StaffProductsPage />} />
+                    <Route
+                      path=":id">
+                        <Route index element={<p>Staff product id</p>} />
+                        <Route path="delete" element={<StaffProductDeletePage />} />
+                      </Route>
+                  </Route>
+                  <Route path="customerinfo">
+                    <Route index element={<p>Staff customerinfo</p>} />
+                    <Route path=":id" element={<p>Staff customerinfo id</p>} />
+                  </Route>
+                  <Route path="processing">
+                    <Route index element={<p>Staff processing</p>} />
+                    <Route path=":id" element={<p>Staff processing id</p>} />
                   </Route>
                 </Route>
 
-                <Route path="/customer">
+                <Route path="/customer" element={<CustomerWrapper />}>
                   <Route index element={<Navigate replace to="products" />} />
-                  <Route path="/customer">
-                    <Route index element={<Navigate replace to="products" />} />
-                    <Route path="products">
-                      <Route index element={<CustomerProductsPage />} />
-                      <Route
-                        path=":id"
-                        element={<CustomerProductSpecificPage />}
-                      />
+                  <Route path="products">
+                    <Route index element={<CustomerProductsPage />} />
+                    <Route path=":id">
+                      <Route index element={<CustomerProductSpecificPage />} />
                     </Route>
-
-                    <Route path="account" element={<CutomerAccountPage />} />
-                    <Route path="orders">
-                      <Route index element={<CustomerOrdersPage />} />
-                      <Route
-                        path=":id"
-                        element={<p>Customer order details</p>}
-                      />
-                    </Route>
-
-                    <Route
-                      path="creditcards"
-                      element={<CustomerCreditCardsPage />}
-                    />
                   </Route>
+
+                  <Route path="account" element={<CutomerAccountPage />} />
+                  <Route path="orders">
+                    <Route index element={<CustomerOrdersPage />} />
+                    <Route path=":id" element={<p>Customer order details</p>} />
+                  </Route>
+
+                  <Route
+                    path="creditcards"
+                    element={<CustomerCreditCardsPage />}
+                  />
+
+                  <Route path="cart" element={<CustomerCartPage />} />
                 </Route>
               </Route>
             </Route>
@@ -112,16 +113,17 @@ const ProtectedRoute = () => {
 
 type RoleProtectedRouteProps = {
   roles: string[];
+  children?: React.ReactNode;
 };
 
-const RoleProtectedRoute = ({ roles }: RoleProtectedRouteProps) => {
+const RoleProtectedRoute = ({ roles, children }: RoleProtectedRouteProps) => {
   const { hasAnyRole } = useAuthRoles();
 
   if (!hasAnyRole(roles)) {
     return <Navigate to="/unauthorized" />;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 };
 
 /**

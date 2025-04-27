@@ -41,9 +41,11 @@ const columns = [
       <img src={info.getValue() + "?random=" + info.row.original.weight} />
     ),
   }),
-  columnHelper.accessor("category", {
-    header: "Category",
-    cell: (info) => info.getValue().categoryName,
+  columnHelper.accessor("categoryId", {
+    header: "Category Id",
+  }),
+  columnHelper.accessor("productType", {
+    header: "Product Type",
   }),
 ];
 

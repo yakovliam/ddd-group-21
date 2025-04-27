@@ -1,9 +1,8 @@
 import { AddressType } from "./addresstype";
-import { UserAccount } from "./useraccount";
 
 export type Address = {
   id: number;
-  userAccount: UserAccount;
+  userAccountId: string;
   addressType: AddressType;
   streetAddress: string;
   city: string;

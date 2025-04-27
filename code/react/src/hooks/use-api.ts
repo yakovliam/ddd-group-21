@@ -2,7 +2,7 @@ import ky, { KyResponse } from "ky";
 import useEasyAuth from "./use-easy-auth";
 import { Customer } from "@/types/customer";
 import { CustomerOrder, CustomerOrderPage } from "@/types/customerorder";
-import { Product, ProductPage } from "@/types/product";
+import { CreateProduct, Product, ProductPage } from "@/types/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cart } from "@/types/cart";
@@ -225,4 +225,65 @@ export const useCreditCards = () => {
     isSuccess,
     refetch,
   };
+};
+
+export const useCreateProduct = (
+  _onSuccess: (data: Product) => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const createProduct = async (product: CreateProduct) => {
+    const response = await api.post(`${API_URL}/products`, {
+      json: product,
+      throwHttpErrors: false,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create product: " + (await response.text()));
+    }
+
+    return (await response.json()) as Product;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["create-product"],
+    mutationFn: createProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteProduct = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const deleteProduct = async (id: number) => {
+    const response = await api.delete(`${API_URL}/products/${id}`, {
+      throwHttpErrors: false,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete product: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["delete-product"],
+    mutationFn: deleteProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
 };

@@ -1,5 +1,3 @@
-import { Address } from "./address";
-
 export interface CreditCard {
   id: number;
   customer: number;
@@ -7,6 +5,6 @@ export interface CreditCard {
   cardholderName: string;
   expirationDate: string;
   cvv: string;
-  paymentAddress: Address;
+  paymentAddressId: number;
   isDefault: boolean;
 }

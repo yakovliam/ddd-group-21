@@ -1,16 +1,17 @@
-import { useProducts } from "@/hooks/use-api";
+import { useCreateProduct, useProducts } from "@/hooks/use-api";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { Product } from "@/types/product";
-import { useState } from "react";
+import { CreateProduct, Product } from "@/types/product";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import * as Toast from "@radix-ui/react-toast";
+import ProductCard from "@/components/composite/ProductCard";
 
-const Products = () => {
+const StaffProductsPage = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [name, setName] = useState("");
-  const [newProduct, setNewProduct] = useState<Product>({
-    id: 0,
+  const [product, setProduct] = useState<CreateProduct>({
     name: "",
     brand: "",
     description: "",
@@ -18,10 +19,8 @@ const Products = () => {
     weight: 0,
     currentPrice: 0,
     imageUrl: "",
-    category: {
-      id: 0,
-      categoryName: "",
-    },
+    categoryId: 0,
+    productType: "",
   });
   const { data, isSuccess, refetch } = useProducts({
     page,
@@ -29,11 +28,57 @@ const Products = () => {
     name,
   });
 
+  const [toastIsOpen, setToastIsOpen] = useState(false);
+  const timerRef = useRef(0);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
   const navigate = useNavigate();
+
+  const onEvent = (
+    isSuccess: boolean,
+    _product?: Product,
+    message?: string
+  ) => {
+    setToastIsOpen(true);
+    timerRef.current = window.setTimeout(() => {
+      setToastIsOpen(false);
+    }, 5000);
+
+    if (isSuccess) {
+      refetch();
+      setMessage("Product created successfully");
+    } else {
+      setMessage(message || "Failed to create product");
+    }
+  };
+
+  const mutation = useCreateProduct(
+    (data) => {
+      onEvent(true, data, undefined);
+    },
+    (message) => {
+      onEvent(false, undefined, message);
+    }
+  );
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <h1> Products Page</h1>
+      <h1>Products Page</h1>
+
+      <Toast.Provider swipeDirection="right">
+        <Toast.Root
+          className="ToastRoot border border-black bg-gray-200"
+          open={toastIsOpen}
+          onOpenChange={setToastIsOpen}
+        >
+          <Toast.Title className="ToastTitle">{message && message}</Toast.Title>
+        </Toast.Root>
+        <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-8 gap-3 w-96 max-w-screen m-0 list-none !z-50" />
+      </Toast.Provider>
 
       <div className="w-full grid grid-cols-4 gap-4">
         <div className="flex flex-col items-center gap-4 col-span-1">
@@ -71,6 +116,7 @@ const Products = () => {
                     key={product.id}
                     product={product}
                     navigate={navigate}
+                    showDelete
                   />
                 );
               })}
@@ -82,19 +128,22 @@ const Products = () => {
         <div>Create new Product</div>
         <div className="flex flex-col items-center gap-4 col-span-1">
           <Input
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
-            }
-            placeholder="brand name"
+            onChange={(e) => setProduct({ ...product, name: e.target.value })}
+            placeholder="name"
+          />
+
+          <Input
+            onChange={(e) => setProduct({ ...product, brand: e.target.value })}
+            placeholder="brand"
           />
 
           <Input
             placeholder="Category id"
             type="number"
             onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                category: { ...newProduct.category, id: Number(e.target.value) },
+              setProduct({
+                ...product,
+                categoryId: Number(e.target.value),
               })
             }
           />
@@ -102,71 +151,48 @@ const Products = () => {
           <Input
             placeholder="description"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
+              setProduct({ ...product, description: e.target.value })
             }
           />
           <Input
             placeholder="size"
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
-            }
+            onChange={(e) => setProduct({ ...product, size: e.target.value })}
           />
           <Input
             placeholder="weight"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
+              setProduct({ ...product, weight: Number(e.target.value) })
             }
           />
           <Input
             placeholder="price"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
+              setProduct({ ...product, currentPrice: Number(e.target.value) })
             }
           />
           <Input
             placeholder="imageUrl"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
+              setProduct({ ...product, imageUrl: e.target.value })
             }
           />
           <Input
             placeholder="product type"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, brand: e.target.value })
+              setProduct({ ...product, productType: e.target.value })
             }
           />
-          <Button onClick={() => {}}>Create NewProduct</Button>
+          <Button
+            onClick={() => {
+              mutation.mutate(product);
+            }}
+          >
+            Create Product
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-const ProductCard = ({
-  product,
-  navigate,
-}: {
-  product: Product;
-  navigate: (path: string) => void;
-}) => {
-  return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <img src={product.imageUrl + "?random=" + product.weight} alt="" />
-      <div className="p-5">
-        <h5
-          className="mb-2 text-2xl font-bold tracking-tight text-blue-500 underline dark:text-white cursor-pointer"
-          onClick={() => {
-            navigate("/customer/products/" + product.id);
-          }}
-        >
-          {product.name}
-        </h5>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {product.description}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default Products;
+export default StaffProductsPage;

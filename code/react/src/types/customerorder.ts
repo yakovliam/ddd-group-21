@@ -1,13 +1,11 @@
-import { CreditCard } from "./creditcard";
-import { Customer } from "./customer";
 import { OrderStatus } from "./orderstatus";
 
 export interface CustomerOrder {
   id: number;
-  customer: Customer;
+  customerId: number;
   orderDate: string;
   orderStatus: OrderStatus;
-  creditCard: CreditCard;
+  creditCardId: number;
   totalAmount: number;
 }
 

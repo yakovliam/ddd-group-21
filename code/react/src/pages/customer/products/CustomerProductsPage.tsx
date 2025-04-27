@@ -1,3 +1,4 @@
+import ProductCard from "@/components/composite/ProductCard";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useProducts } from "@/hooks/use-api";
@@ -64,33 +65,6 @@ const CustomerProductsPage = () => {
             </div>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-const ProductCard = ({
-  product,
-  navigate,
-}: {
-  product: Product;
-  navigate: (path: string) => void;
-}) => {
-  return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <img src={product.imageUrl + "?random=" + product.weight} alt="" />
-      <div className="p-5">
-        <h5
-          className="mb-2 text-2xl font-bold tracking-tight text-blue-500 underline dark:text-white cursor-pointer"
-          onClick={() => {
-            navigate("/customer/products/" + product.id);
-          }}
-        >
-          {product.name}
-        </h5>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {product.description}
-        </p>
       </div>
     </div>
   );

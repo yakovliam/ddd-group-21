@@ -1,9 +1,8 @@
 package ddd.group21.model.dto;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
-public class ProductDTO {
+public class CreateProductDTO {
 
   private Long id;
 
@@ -23,16 +22,11 @@ public class ProductDTO {
 
   private String imageUrl;
 
-  private Timestamp creationDate;
-
-  private Timestamp lastUpdated;
-
   private String productType;
 
-  public ProductDTO(Long id, Long categoryId, String name, String brand,
-                    String description,
-                    String size, BigDecimal weight, BigDecimal currentPrice, String imageUrl,
-                    Timestamp creationDate, Timestamp lastUpdated, String productType) {
+  public CreateProductDTO(Long id, Long categoryId, String name, String brand, String description,
+                          String size, BigDecimal weight, BigDecimal currentPrice, String imageUrl,
+                          String productType) {
     this.id = id;
     this.categoryId = categoryId;
     this.name = name;
@@ -42,8 +36,6 @@ public class ProductDTO {
     this.weight = weight;
     this.currentPrice = currentPrice;
     this.imageUrl = imageUrl;
-    this.creationDate = creationDate;
-    this.lastUpdated = lastUpdated;
     this.productType = productType;
   }
 
@@ -117,22 +109,6 @@ public class ProductDTO {
 
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
-  }
-
-  public Timestamp getCreationDate() {
-    return creationDate;
-  }
-
-  public void setCreationDate(Timestamp creationDate) {
-    this.creationDate = creationDate;
-  }
-
-  public Timestamp getLastUpdated() {
-    return lastUpdated;
-  }
-
-  public void setLastUpdated(Timestamp lastUpdated) {
-    this.lastUpdated = lastUpdated;
   }
 
   public String getProductType() {
