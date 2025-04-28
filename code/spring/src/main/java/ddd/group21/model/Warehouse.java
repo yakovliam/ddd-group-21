@@ -5,10 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "warehouse")
@@ -22,15 +23,13 @@ public class Warehouse {
   @Column(name = "warehouse_name", nullable = false)
   private String warehouseName;
 
-  @Column(name = "quantity", nullable = false)
-  private Integer quantity;
+  @JoinColumn(name = "address_id", nullable = false)
+  @ManyToOne
+  private Address address;
 
   @Digits(integer = 10, fraction = 2)
-  @Column(name = "unit_size", precision = 10, scale = 2, nullable = false)
-  private BigDecimal unitSize;
-
-  @Column(name = "last_restocked", nullable = false)
-  private Timestamp lastRestocked;
+  @Column(name = "capacity", precision = 10, scale = 2, nullable = false)
+  private BigDecimal capacity;
 
   public Long getId() {
     return id;
@@ -48,27 +47,19 @@ public class Warehouse {
     this.warehouseName = warehouseName;
   }
 
-  public Integer getQuantity() {
-    return quantity;
+  public Address getAddress() {
+    return address;
   }
 
-  public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
+  public void setAddress(Address address) {
+    this.address = address;
   }
 
-  public BigDecimal getUnitSize() {
-    return unitSize;
+  public BigDecimal getCapacity() {
+    return capacity;
   }
 
-  public void setUnitSize(BigDecimal unitSize) {
-    this.unitSize = unitSize;
-  }
-
-  public Timestamp getLastRestocked() {
-    return lastRestocked;
-  }
-
-  public void setLastRestocked(Timestamp lastRestocked) {
-    this.lastRestocked = lastRestocked;
+  public void setCapacity(BigDecimal capacity) {
+    this.capacity = capacity;
   }
 }

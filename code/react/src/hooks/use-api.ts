@@ -8,6 +8,10 @@ import { useMemo } from "react";
 import { Cart } from "@/types/cart";
 import { CreditCard } from "@/types/creditcard";
 import { Address } from "@/types/address";
+import { Warehouse } from "@/types/warehouse";
+import { Supplier } from "@/types/supplier";
+import { SupplierProduct } from "@/types/supplierproduct";
+import { Stock } from "@/types/stock";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -235,7 +239,7 @@ export const useCreateProduct = (
   const api = useApi();
 
   const createProduct = async (product: CreateProduct) => {
-    const response = await api.post(`${API_URL}/products`, {
+    const response = await api.post(`${API_URL}/staff/products`, {
       json: product,
       throwHttpErrors: false,
     });
@@ -266,7 +270,7 @@ export const useDeleteProduct = (
   const api = useApi();
 
   const deleteProduct = async (id: number) => {
-    const response = await api.delete(`${API_URL}/products/${id}`, {
+    const response = await api.delete(`${API_URL}/staff/products/${id}`, {
       throwHttpErrors: false,
     });
 
@@ -478,4 +482,140 @@ export const useSetAddressDefault = (
   });
 
   return mutation;
+};
+
+export const useWarehouses = () => {
+  const api = useApi();
+
+  const fetchWarehouses = async (): Promise<Warehouse[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/warehouses`)
+      .json();
+
+    return response as Warehouse[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["warehouses"],
+    queryFn: () => fetchWarehouses(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useSuppliers = () => {
+  const api = useApi();
+
+  const fetchSuppliers = async (): Promise<Supplier[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/suppliers`)
+      .json();
+
+    return response as Supplier[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["suppliers"],
+    queryFn: () => fetchSuppliers(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useSupplierProducts = () => {
+  const api = useApi();
+
+  const fetchSupplierProducts = async (): Promise<SupplierProduct[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/supplier-products`)
+      .json();
+
+    return response as SupplierProduct[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["supplier-products"],
+    queryFn: () => fetchSupplierProducts(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useStocks = () => {
+  const api = useApi();
+
+  const fetchStocks = async (): Promise<Stock[]> => {
+    const response = await api.get(`${API_URL}/staff/logistics/stocks`).json();
+
+    return response as Stock[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["stocks"],
+    queryFn: () => fetchStocks(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useStaffProducts = () => {
+  const api = useApi();
+
+  const fetchStaffProducts = async (): Promise<Product[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/products`)
+      .json();
+
+    return response as Product[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["staff-products"],
+    queryFn: () => fetchStaffProducts(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useStaffCustomerOrders = () => {
+  const api = useApi();
+
+  const fetchStaffCustomerOrders = async (): Promise<CustomerOrder[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/customer-orders`)
+      .json();
+
+    return response as CustomerOrder[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["staff-customer-orders"],
+    queryFn: () => fetchStaffCustomerOrders(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
 };

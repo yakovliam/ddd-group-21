@@ -53,7 +53,7 @@ public class CustomersCreditCardsController {
                 new CycleAvoidingMappingContext())));
   }
 
-  @PutMapping
+  @PostMapping
   public ResponseEntity<Object> addCreditCard(@PathVariable("id") String customerId,
                                               @RequestBody CreditCardDTO creditCard) {
     if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {

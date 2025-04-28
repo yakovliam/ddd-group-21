@@ -1,14 +1,14 @@
 import { OrderStatus } from "./orderstatus";
 
-export interface CustomerOrder {
+export type CustomerOrder = {
   id: number;
   customerId: number;
   orderDate: string;
   orderStatus: OrderStatus;
   creditCardId: number;
   totalAmount: number;
-}
+};
 
-export interface CustomerOrderPage {
+export type CustomerOrderPage = {
   content: CustomerOrder[];
-}
+};

@@ -13,9 +13,7 @@ const StaffWrapper = () => {
           Processing
         </Button>
         <Button onClick={() => navigate("/staff/products")}>Products</Button>
-        <Button onClick={() => navigate("/staff/warehouses")}>
-          Warehouses and suppliers
-        </Button>
+        <Button onClick={() => navigate("/staff/logistics")}>Logistics</Button>
       </div>
       <Outlet />
     </div>

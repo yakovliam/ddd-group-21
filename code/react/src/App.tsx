@@ -17,6 +17,7 @@ import CutomerAccountPage from "./pages/customer/account/CutomerAccountPage";
 import CustomerWrapper from "./components/layout/CustomerWrapper";
 import CustomerCartPage from "./pages/customer/cart/CustomerCartPage";
 import StaffProductDeletePage from "./pages/staff/products/StaffProductDeletePage";
+import StaffLogisticsPage from "./pages/staff/logistics/StaffLogisticsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ function App() {
                       />
                     </Route>
                   </Route>
+                  <Route path="logistics" element={<StaffLogisticsPage />} />
                   <Route path="customerinfo">
                     <Route index element={<p>Staff customerinfo</p>} />
                     <Route path=":id" element={<p>Staff customerinfo id</p>} />
