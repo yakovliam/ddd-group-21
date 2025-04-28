@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @CrossOrigin
@@ -70,8 +72,8 @@ public class CustomersCreditCardsController {
     }
 
     // get address
-    Address paymentAddress = addressRepository
-        .findById(creditCard.getPaymentAddressId()).orElse(null);
+    Address paymentAddress =
+        addressRepository.findById(creditCard.getPaymentAddressId()).orElse(null);
 
     if (paymentAddress == null) {
       return ResponseEntity.status(404)
@@ -99,6 +101,31 @@ public class CustomersCreditCardsController {
     }
 
     creditCardRepository.deleteById(Long.parseLong(creditCardId));
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/{creditCardId}")
+  public ResponseEntity<Object> postCreditCard(@PathVariable("id") String customerId,
+                                               @PathVariable("creditCardId") String creditCardId,
+                                               @RequestParam(name = "action", required = false)
+                                               String action) {
+    if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
+      return ResponseEntity.status(400).body("Invalid customer id");
+    }
+
+    CreditCard creditCard =
+        creditCardRepository.findById(Long.parseLong(creditCardId)).orElse(null);
+
+    if (creditCard == null) {
+      return ResponseEntity.status(404).body("Credit card " + creditCardId + " does not exist");
+    }
+
+    if (action.equals("set-default")) {
+      creditCardRepository.setAllDefaultFalse(creditCard.getCustomer().getId());
+      creditCard.setDefault(true);
+      creditCardRepository.save(creditCard);
+    }
 
     return ResponseEntity.ok().build();
   }

@@ -1,12 +1,14 @@
 import Button from "@/components/ui/Button";
+import ToastProvider from "@/components/ui/ToastProvider";
 import { useDeleteProduct } from "@/hooks/use-api";
 import useToast from "@/hooks/use-toast";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 
 const StaffProductDeletePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { openToast, toastProvider } = useToast();
+  const { openToast, providerState } =
+    useToast();
 
   const mutation = useDeleteProduct(
     () => {
@@ -25,13 +27,15 @@ const StaffProductDeletePage = () => {
     }
   );
 
-  if (!id) {
-    return null;
+  if (!id || isNaN(Number(id))) {
+    return <Navigate to="/staff/products" />;
   }
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {toastProvider}
+      <ToastProvider
+        state={providerState}
+      />
       <h1>Product Delete Page</h1>
       <p>Product ID: {id}</p>
       <h3>Are you sure you want to delete this product?</h3>

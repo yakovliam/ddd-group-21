@@ -12,11 +12,14 @@ import ddd.group21.repository.UserAccountRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @CrossOrigin
@@ -56,10 +59,9 @@ public class CustomersAddressesController {
           .body("User account for customer " + customerId + " does not exist");
     }
 
-    return ResponseEntity.ok(
-        addressRepository.findByUserAccount_Id(userAccount.getId()).stream().map(
-            address -> addressMapper.addressToAddressDTO(address, new CycleAvoidingMappingContext())
-        ));
+    return ResponseEntity.ok(addressRepository.findByUserAccount_Id(userAccount.getId()).stream()
+        .map(address -> addressMapper.addressToAddressDTO(address,
+            new CycleAvoidingMappingContext())));
   }
 
   @PutMapping
@@ -84,6 +86,50 @@ public class CustomersAddressesController {
     Address addressEntity = addressMapper.addressDTOToAddress(address, userAccount);
 
     addressRepository.save(addressEntity);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("/{addressId}")
+  public ResponseEntity<Object> deleteAddress(@PathVariable("id") String customerId,
+                                              @PathVariable("addressId") String addressId) {
+    if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
+      return ResponseEntity.status(400).body("Invalid customer id");
+    }
+
+    if (addressId == null || addressId.isEmpty() || !addressId.matches("\\d+")) {
+      return ResponseEntity.status(400).body("Invalid address id");
+    }
+
+    addressRepository.deleteById(Long.parseLong(addressId));
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/{addressId}")
+  public ResponseEntity<Object> updateAddress(@PathVariable("id") String customerId,
+                                              @PathVariable("addressId") String addressId,
+                                              @RequestParam(name = "action", required = false)
+                                              String action) {
+    if (customerId == null || customerId.isEmpty() || !customerId.matches("\\d+")) {
+      return ResponseEntity.status(400).body("Invalid customer id");
+    }
+
+    if (addressId == null || addressId.isEmpty() || !addressId.matches("\\d+")) {
+      return ResponseEntity.status(400).body("Invalid address id");
+    }
+
+    Address address = addressRepository.findById(Long.parseLong(addressId)).orElse(null);
+
+    if (address == null) {
+      return ResponseEntity.status(404).body("Address " + addressId + " does not exist");
+    }
+
+    if (action.equals("set-default")) {
+      addressRepository.setAllDefaultFalse(address.getUserAccount().getId());
+      address.setDefault(true);
+      addressRepository.save(address);
+    }
 
     return ResponseEntity.ok().build();
   }

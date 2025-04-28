@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cart } from "@/types/cart";
 import { CreditCard } from "@/types/creditcard";
+import { Address } from "@/types/address";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -279,6 +280,197 @@ export const useDeleteProduct = (
   const mutation = useMutation({
     mutationKey: ["delete-product"],
     mutationFn: deleteProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteCreditCard = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const deleteCreditCard = async (id: number) => {
+    const response = await api.delete(
+      `${API_URL}/customers/${customerId}/creditcards/${id}`,
+      {
+        throwHttpErrors: false,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to delete credit card: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["delete-credit-card"],
+    mutationFn: deleteCreditCard,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useSetCreditCardDefault = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const setCreditCardDefault = async (id: number) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("action", "set-default");
+    const response = await api.post(
+      `${API_URL}/customers/${customerId}/creditcards/${id}`,
+      {
+        throwHttpErrors: false,
+        searchParams,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to set credit card default: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["set-credit-card-default"],
+    mutationFn: setCreditCardDefault,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useAddresses = () => {
+  const api = useApi();
+  const { data: customer } = useCustomer(); // TODO: use customer id
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const fetchAddresses = async (): Promise<Address[]> => {
+    const response = await api
+      .get(`${API_URL}/customers/${customerId}/addresses`)
+      .json();
+
+    return response as Address[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => fetchAddresses(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
+export const useDeleteAddress = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const deleteAddress = async (id: number) => {
+    const response = await api.delete(
+      `${API_URL}/customers/${customerId}/addresses/${id}`,
+      {
+        throwHttpErrors: false,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete address: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["delete-address"],
+    mutationFn: deleteAddress,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useSetAddressDefault = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const setAddressDefault = async (id: number) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("action", "set-default");
+    const response = await api.post(
+      `${API_URL}/customers/${customerId}/addresses/${id}`,
+      {
+        throwHttpErrors: false,
+        searchParams,
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        "Failed to set address default: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["set-address-default"],
+    mutationFn: setAddressDefault,
     onSuccess: _onSuccess,
     onError: (error) => {
       _onError(error.message);

@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
 
 export type ToastProps = {
   openToast: (title: string, description: string) => void;
   closeToast: () => void;
-  toastProvider: React.ReactNode;
+  providerState: {
+    toastIsOpen: boolean;
+    setToastIsOpen: (open: boolean) => void;
+    title: string;
+    description: string;
+  };
 };
 
 const useToast = (): ToastProps => {
@@ -29,21 +33,12 @@ const useToast = (): ToastProps => {
     closeToast: () => {
       setToastIsOpen(false);
     },
-    toastProvider: (
-      <Toast.Provider swipeDirection="right">
-        <Toast.Root
-          className="ToastRoot border border-black bg-gray-200"
-          open={toastIsOpen}
-          onOpenChange={setToastIsOpen}
-        >
-          <Toast.Title className="ToastTitle">{title}</Toast.Title>
-          <Toast.Description className="ToastDescription">
-            {description}
-          </Toast.Description>
-        </Toast.Root>
-        <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-8 gap-3 w-96 max-w-screen m-0 list-none !z-50" />
-      </Toast.Provider>
-    ),
+    providerState: {
+      toastIsOpen,
+      setToastIsOpen,
+      title,
+      description,
+    },
   };
 };
 

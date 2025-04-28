@@ -1,10 +1,11 @@
 import Button from "@/components/ui/Button";
+import ToastProvider from "@/components/ui/ToastProvider";
 import { useSubmitOrder } from "@/hooks/use-api";
+import useToast from "@/hooks/use-toast";
 import { useCartStore } from "@/store/store";
 import { CartItem } from "@/types/cart";
 import { CustomerOrder } from "@/types/customerorder";
-import * as Toast from "@radix-ui/react-toast";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 
 const CustomerCartPage = () => {
   const cart = useCartStore((state) => state.cart);
@@ -17,23 +18,20 @@ const CustomerCartPage = () => {
     };
   }, [cart]);
 
-  const [responseData, setResponseData] = useState<CustomerOrder>();
-  const [responseSuccess, setResponseSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>("");
+  const { openToast, providerState } = useToast();
 
   const onEvent = (
     isSuccess: boolean,
-    order?: CustomerOrder,
+    _order?: CustomerOrder,
     message?: string
   ) => {
-    setResponseSuccess(isSuccess);
-    setResponseData(order);
-    setErrorMessage(message);
     clearCart();
-    setToastIsOpen(true);
-    timerRef.current = window.setTimeout(() => {
-      setToastIsOpen(false);
-    }, 5000);
+
+    if (isSuccess) {
+      openToast("Success", "Order created successfully");
+    } else {
+      openToast("Error", "Failed to create order: " + message);
+    }
   };
 
   const mutation = useSubmitOrder(
@@ -45,45 +43,9 @@ const CustomerCartPage = () => {
     }
   );
 
-  const [toastIsOpen, setToastIsOpen] = useState(false);
-  const timerRef = useRef(0);
-
-  useEffect(() => {
-    return () => clearTimeout(timerRef.current);
-  }, []);
-
   return (
     <div className="flex flex-col items-center gap-4">
-      <Toast.Provider swipeDirection="right">
-        <Toast.Root
-          className="ToastRoot border border-black bg-gray-200"
-          open={toastIsOpen}
-          onOpenChange={setToastIsOpen}
-        >
-          <Toast.Title className="ToastTitle">
-            Order Placed: {responseSuccess ? "Success" : "Failed"}
-          </Toast.Title>
-          <Toast.Description asChild>
-            <div>
-              {errorMessage && (
-                <div>
-                  <h1>Error</h1>
-                  {JSON.stringify(errorMessage)}
-                </div>
-              )}
-              {responseData && (
-                <div>
-                  <h1>Order Details</h1>
-                  {responseData?.id}
-                  {responseData?.orderDate}
-                  {responseData?.totalAmount}
-                </div>
-              )}
-            </div>
-          </Toast.Description>
-        </Toast.Root>
-        <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-8 gap-3 w-96 max-w-screen m-0 list-none !z-50" />
-      </Toast.Provider>
+      <ToastProvider state={providerState} />
 
       <h1>Cart Page</h1>
 
