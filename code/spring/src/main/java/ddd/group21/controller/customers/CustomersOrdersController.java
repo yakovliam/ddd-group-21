@@ -1,17 +1,23 @@
 package ddd.group21.controller.customers;
 
+import ddd.group21.model.Address;
 import ddd.group21.model.CreditCard;
 import ddd.group21.model.Customer;
 import ddd.group21.model.CustomerOrder;
+import ddd.group21.model.DeliveryPlan;
+import ddd.group21.model.DeliveryType;
 import ddd.group21.model.OrderStatus;
 import ddd.group21.model.dto.CartDTO;
 import ddd.group21.model.dto.CustomerOrderDTO;
 import ddd.group21.model.mapper.CustomerOrderMapper;
 import ddd.group21.model.mapper.CycleAvoidingMappingContext;
+import ddd.group21.repository.AddressRepository;
 import ddd.group21.repository.CreditCardRepository;
 import ddd.group21.repository.CustomerOrdersRepository;
 import ddd.group21.repository.CustomerRepository;
+import ddd.group21.repository.DeliverPlanRepository;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Pageable;
@@ -34,13 +40,19 @@ public class CustomersOrdersController {
   private final CustomerOrdersRepository customerOrdersRepository;
   private final CustomerRepository customersRepository;
   private final CreditCardRepository creditCardRepository;
+  private final AddressRepository addressRepository;
+  private final DeliverPlanRepository deliverPlanRepository;
 
   public CustomersOrdersController(CustomerOrdersRepository customerOrdersRepository,
                                    CustomerRepository customersRepository,
-                                   CreditCardRepository creditCardRepository) {
+                                   CreditCardRepository creditCardRepository,
+                                   AddressRepository addressRepository,
+                                   DeliverPlanRepository deliverPlanRepository) {
     this.customerOrdersRepository = customerOrdersRepository;
     this.customersRepository = customersRepository;
+    this.addressRepository = addressRepository;
     this.creditCardRepository = creditCardRepository;
+    this.deliverPlanRepository = deliverPlanRepository;
   }
 
   @GetMapping
@@ -123,6 +135,24 @@ public class CustomersOrdersController {
             new CycleAvoidingMappingContext());
 
     customerOrdersRepository.save(customerOrder);
+
+    // create delivery plan
+    DeliveryPlan deliveryPlan = new DeliveryPlan();
+    deliveryPlan.setCustomerOrder(customerOrder);
+
+    Address address = addressRepository.findByUserAccount_IdAndIsDefault(
+        customerOrder.getCustomer().getUserAccount().getId(), true).orElse(null);
+    if (address == null) {
+      return ResponseEntity.status(404).body("Address does not exist");
+    }
+
+    deliveryPlan.setDeliveryAddress(address);
+    deliveryPlan.setDeliveryDate(LocalDate.now().plusDays(3));
+    deliveryPlan.setDeliveryType(DeliveryType.STANDARD);
+    deliveryPlan.setDeliveryPrice(BigDecimal.valueOf(5.99));
+    deliveryPlan.setShipDate(LocalDate.now());
+
+    deliverPlanRepository.save(deliveryPlan);
 
     return ResponseEntity.ok(customerOrderDTO);
   }

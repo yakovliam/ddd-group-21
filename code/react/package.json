@@ -12,6 +12,8 @@
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.2",
+    "@radix-ui/react-icons": "^1.3.2",
     "@radix-ui/react-toast": "^1.2.11",
     "@tailwindcss/vite": "^4.0.9",
     "@tanstack/react-query": "^5.74.4",

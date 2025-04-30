@@ -1,6 +1,9 @@
 package ddd.group21.controller.staff;
 
 import ddd.group21.model.Address;
+import ddd.group21.model.CreditCard;
+import ddd.group21.model.Customer;
+import ddd.group21.model.CustomerOrder;
 import ddd.group21.model.Product;
 import ddd.group21.model.ProductCategory;
 import ddd.group21.model.Stock;
@@ -8,6 +11,7 @@ import ddd.group21.model.Supplier;
 import ddd.group21.model.SupplierProduct;
 import ddd.group21.model.Warehouse;
 import ddd.group21.model.dto.CreateProductDTO;
+import ddd.group21.model.dto.CustomerOrderDTO;
 import ddd.group21.model.dto.StockDTO;
 import ddd.group21.model.dto.SupplierDTO;
 import ddd.group21.model.dto.SupplierProductDTO;
@@ -20,7 +24,9 @@ import ddd.group21.model.mapper.SupplierMapper;
 import ddd.group21.model.mapper.SupplierProductMapper;
 import ddd.group21.model.mapper.WarehouseMapper;
 import ddd.group21.repository.AddressRepository;
+import ddd.group21.repository.CreditCardRepository;
 import ddd.group21.repository.CustomerOrdersRepository;
+import ddd.group21.repository.CustomerRepository;
 import ddd.group21.repository.ProductCategoryRepository;
 import ddd.group21.repository.ProductRepository;
 import ddd.group21.repository.StockRepository;
@@ -63,6 +69,8 @@ public class StaffLogisticsController {
   private final ProductRepository productRepository;
   private final ProductCategoryRepository productCategoryRepository;
   private final CustomerOrdersRepository customerOrdersRepository;
+  private final CustomerRepository customerRepository;
+  private final CreditCardRepository creditCardRepository;
 
   public StaffLogisticsController(SupplierRepository supplierRepository,
                                   SupplierProductRepository supplierProductRepository,
@@ -71,7 +79,9 @@ public class StaffLogisticsController {
                                   AddressRepository addressRepository,
                                   ProductRepository productRepository,
                                   ProductCategoryRepository productCategoryRepository,
-                                  CustomerOrdersRepository customerOrdersRepository) {
+                                  CustomerOrdersRepository customerOrdersRepository,
+                                  CustomerRepository customerRepository,
+                                  CreditCardRepository creditCardRepository) {
     this.supplierRepository = supplierRepository;
     this.supplierProductRepository = supplierProductRepository;
     this.warehouseRepository = warehouseRepository;
@@ -80,6 +90,8 @@ public class StaffLogisticsController {
     this.productRepository = productRepository;
     this.productCategoryRepository = productCategoryRepository;
     this.customerOrdersRepository = customerOrdersRepository;
+    this.customerRepository = customerRepository;
+    this.creditCardRepository = creditCardRepository;
   }
 
   @GetMapping("/products")
@@ -301,5 +313,34 @@ public class StaffLogisticsController {
     return ResponseEntity.ok(customerOrdersRepository.findAll().stream().map(
         order -> customerOrderMapper.customerOrderToCustomerOrderDTO(order,
             new CycleAvoidingMappingContext())).collect(Collectors.toSet()));
+  }
+
+  @PostMapping("/customer-orders/{id}")
+  public ResponseEntity<Object> updateOrder(@PathVariable Long id,
+                                            @RequestBody CustomerOrderDTO customerOrderDTO) {
+    if (!customerOrdersRepository.existsById(id)) {
+      return ResponseEntity.status(404).body("Order not found");
+    }
+
+    Customer customer = customerRepository.findById(customerOrderDTO.getCustomerId()).orElse(null);
+
+    if (customer == null) {
+      return ResponseEntity.status(404).body("Customer not found");
+    }
+
+    CreditCard creditCard =
+        creditCardRepository.findByCustomerAndDefault(customer, true).orElse(null);
+
+    if (creditCard == null) {
+      return ResponseEntity.status(404).body("Credit card not found");
+    }
+
+    CustomerOrder order =
+        customerOrderMapper.customerOrderDTOToCustomerOrder(customerOrderDTO, customer,
+            creditCard, new CycleAvoidingMappingContext());
+    order.setId(id);
+    customerOrdersRepository.saveAndFlush(order);
+
+    return ResponseEntity.ok("Order updated successfully");
   }
 }

@@ -1,6 +1,7 @@
 package ddd.group21.repository;
 
 import ddd.group21.model.Address;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,4 +18,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
   @Modifying
   @Transactional
   void setAllDefaultFalse(Long userAccountId);
+
+  Optional<Address> findByUserAccount_IdAndIsDefault(Long userAccountId, boolean aDefault);
 }

@@ -6,4 +6,5 @@
 
     <include file="changelog/01-create-schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/02-update-order-status-column.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/03-update-credit-card-exp-date.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

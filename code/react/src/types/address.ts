@@ -9,5 +9,5 @@ export type Address = {
   state: string;
   postalCode: string;
   country: string;
-  default: boolean;
+  isDefault: boolean;
 };

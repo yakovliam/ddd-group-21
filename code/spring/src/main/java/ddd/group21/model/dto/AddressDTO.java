@@ -8,7 +8,7 @@ public class AddressDTO {
 
   private Long userAccountId;
 
-  private AddressType addressType;
+  private String addressType;
 
   private String streetAddress;
 
@@ -22,7 +22,7 @@ public class AddressDTO {
 
   private boolean isDefault;
 
-  public AddressDTO(Long id, Long userAccountId, AddressType addressType, String streetAddress,
+  public AddressDTO(Long id, Long userAccountId, String addressType, String streetAddress,
                     String city, String state, String postalCode, String country,
                     boolean isDefault) {
     this.id = id;
@@ -52,11 +52,11 @@ public class AddressDTO {
     this.userAccountId = userAccountId;
   }
 
-  public AddressType getAddressType() {
+  public String getAddressType() {
     return addressType;
   }
 
-  public void setAddressType(AddressType addressType) {
+  public void setAddressType(String addressType) {
     this.addressType = addressType;
   }
 

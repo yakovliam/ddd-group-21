@@ -38,7 +38,7 @@ const CreditCardCard = ({
           CVV: {creditCard.cvv}
         </p>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          Is Default: {creditCard.isDefault}
+          Is Default: {creditCard.default ? "Yes" : "No"}
         </p>
       </div>
     </div>

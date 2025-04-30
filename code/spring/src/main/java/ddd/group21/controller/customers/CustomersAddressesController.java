@@ -83,6 +83,7 @@ public class CustomersAddressesController {
     UserAccount userAccount = customer.getUserAccount();
 
     Address addressEntity = addressMapper.addressDTOToAddress(address, userAccount);
+    addressEntity.setId(null);
 
     addressRepository.save(addressEntity);
 

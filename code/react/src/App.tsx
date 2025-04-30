@@ -18,6 +18,10 @@ import CustomerWrapper from "./components/layout/CustomerWrapper";
 import CustomerCartPage from "./pages/customer/cart/CustomerCartPage";
 import StaffProductDeletePage from "./pages/staff/products/StaffProductDeletePage";
 import StaffLogisticsPage from "./pages/staff/logistics/StaffLogisticsPage";
+import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCreditCardsPage";
+import CustomerCreditCardsNewPage from "./pages/customer/creditcards/CustomerCreditCardsNewPage";
+import CustomerAddressesPage from "./pages/customer/addresses/CustomerAddressesPage";
+import CustomerAddressesNewPage from "./pages/customer/addresses/CustomerAddressesNewPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -75,7 +79,21 @@ function App() {
                     </Route>
                   </Route>
 
+                  <Route path="creditcards">
+                    <Route index element={<CustomerCreditCardsPage />} />
+                    <Route
+                      path="new"
+                      element={<CustomerCreditCardsNewPage />}
+                    />
+                  </Route>
+
+                  <Route path="addresses">
+                    <Route index element={<CustomerAddressesPage />} />
+                    <Route path="new" element={<CustomerAddressesNewPage />} />
+                  </Route>
+
                   <Route path="account" element={<CutomerAccountPage />} />
+                  
                   <Route path="orders">
                     <Route index element={<CustomerOrdersPage />} />
                     <Route path=":id" element={<p>Customer order details</p>} />

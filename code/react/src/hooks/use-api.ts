@@ -6,7 +6,7 @@ import { CreateProduct, Product, ProductPage } from "@/types/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cart } from "@/types/cart";
-import { CreditCard } from "@/types/creditcard";
+import { CreateCreditCard, CreditCard } from "@/types/creditcard";
 import { Address } from "@/types/address";
 import { Warehouse } from "@/types/warehouse";
 import { Supplier } from "@/types/supplier";
@@ -239,7 +239,7 @@ export const useCreateProduct = (
   const api = useApi();
 
   const createProduct = async (product: CreateProduct) => {
-    const response = await api.post(`${API_URL}/staff/products`, {
+    const response = await api.post(`${API_URL}/staff/logistics/products`, {
       json: product,
       throwHttpErrors: false,
     });
@@ -270,9 +270,12 @@ export const useDeleteProduct = (
   const api = useApi();
 
   const deleteProduct = async (id: number) => {
-    const response = await api.delete(`${API_URL}/staff/products/${id}`, {
-      throwHttpErrors: false,
-    });
+    const response = await api.delete(
+      `${API_URL}/staff/logistics/products/${id}`,
+      {
+        throwHttpErrors: false,
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to delete product: " + (await response.text()));
@@ -618,4 +621,216 @@ export const useStaffCustomerOrders = () => {
     isSuccess,
     refetch,
   };
+};
+
+export const useCreateCreditCard = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const createCreditCard = async (creditCard: CreateCreditCard) => {
+    const response = await api.post(
+      `${API_URL}/customers/${customerId}/creditcards`,
+      {
+        throwHttpErrors: false,
+        json: creditCard,
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        "Failed to create credit card: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["create-credit-card"],
+    mutationFn: createCreditCard,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useCreateAddress = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+  const { data: customer } = useCustomer();
+
+  const customerId = useMemo(() => {
+    return customer?.id;
+  }, [customer]);
+
+  const createAddress = async (address: Address) => {
+    const response = await api.post(
+      `${API_URL}/customers/${customerId}/addresses`,
+      {
+        throwHttpErrors: false,
+        json: address,
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to create address: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["create-address"],
+    mutationFn: createAddress,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateSupplierProduct = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const updateSupplierProduct = async (supplierProduct: SupplierProduct) => {
+    const response = await api.post(
+      `${API_URL}/staff/logistics/supplier-products/${supplierProduct.id}`,
+      {
+        throwHttpErrors: false,
+        json: supplierProduct,
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        "Failed to update supplier product: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["update-supplier-product"],
+    mutationFn: updateSupplierProduct,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateSupplier = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const updateSupplier = async (supplier: Supplier) => {
+    const response = await api.post(
+      `${API_URL}/staff/logistics/suppliers/${supplier.id}`,
+      {
+        throwHttpErrors: false,
+        json: supplier,
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to update supplier: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["update-supplier"],
+    mutationFn: updateSupplier,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+const useUpdateWarehouse = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const updateWarehouse = async (warehouse: Warehouse) => {
+    const response = await api.post(
+      `${API_URL}/staff/logistics/warehouses/${warehouse.id}`,
+      {
+        throwHttpErrors: false,
+        json: warehouse,
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to update warehouse: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["update-warehouse"],
+    mutationFn: updateWarehouse,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateStock = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi(); 
+
+  const updateStock = async (stock: Stock) => {
+    const response = await api.post(
+      `${API_URL}/staff/logistics/stocks/${stock.id}`,
+      {
+        throwHttpErrors: false,
+        json: stock,
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to update stock: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["update-stock"],
+    mutationFn: updateStock,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
 };
