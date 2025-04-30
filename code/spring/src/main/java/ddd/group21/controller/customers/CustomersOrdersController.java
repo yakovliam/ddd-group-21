@@ -140,7 +140,7 @@ public class CustomersOrdersController {
     DeliveryPlan deliveryPlan = new DeliveryPlan();
     deliveryPlan.setCustomerOrder(customerOrder);
 
-    Address address = addressRepository.findByUserAccount_IdAndIsDefault(
+    Address address = addressRepository.findByUserAccount_IdAndDefaultIs(
         customerOrder.getCustomer().getUserAccount().getId(), true).orElse(null);
     if (address == null) {
       return ResponseEntity.status(404).body("Address does not exist");
