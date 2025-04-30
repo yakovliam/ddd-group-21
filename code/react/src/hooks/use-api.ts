@@ -600,6 +600,29 @@ export const useStaffProducts = () => {
   };
 };
 
+export const useStaffCustomers = () => {
+  const api = useApi();
+
+  const fetchStaffProducts = async (): Promise<Customer[]> => {
+    const response = await api
+      .get(`${API_URL}/staff/logistics/customers`)
+      .json();
+
+    return response as Customer[];
+  };
+
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["staff-products"],
+    queryFn: () => fetchStaffProducts(),
+  });
+
+  return {
+    data,
+    isSuccess,
+    refetch,
+  };
+};
+
 export const useStaffCustomerOrders = () => {
   const api = useApi();
 
@@ -806,7 +829,7 @@ export const useUpdateStock = (
   _onSuccess: () => void,
   _onError: (message: string) => void
 ) => {
-  const api = useApi(); 
+  const api = useApi();
 
   const updateStock = async (stock: Stock) => {
     const response = await api.post(

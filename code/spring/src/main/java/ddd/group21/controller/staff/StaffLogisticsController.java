@@ -16,13 +16,7 @@ import ddd.group21.model.dto.StockDTO;
 import ddd.group21.model.dto.SupplierDTO;
 import ddd.group21.model.dto.SupplierProductDTO;
 import ddd.group21.model.dto.WarehouseDTO;
-import ddd.group21.model.mapper.CustomerOrderMapper;
-import ddd.group21.model.mapper.CycleAvoidingMappingContext;
-import ddd.group21.model.mapper.ProductMapper;
-import ddd.group21.model.mapper.StockMapper;
-import ddd.group21.model.mapper.SupplierMapper;
-import ddd.group21.model.mapper.SupplierProductMapper;
-import ddd.group21.model.mapper.WarehouseMapper;
+import ddd.group21.model.mapper.*;
 import ddd.group21.repository.AddressRepository;
 import ddd.group21.repository.CreditCardRepository;
 import ddd.group21.repository.CustomerOrdersRepository;
@@ -60,6 +54,7 @@ public class StaffLogisticsController {
   private final WarehouseMapper warehouseMapper = WarehouseMapper.INSTANCE;
   private final ProductMapper productMapper = ProductMapper.INSTANCE;
   private final CustomerOrderMapper customerOrderMapper = CustomerOrderMapper.INSTANCE;
+  private final CustomerInfoMapper customerInfoMapper = CustomerInfoMapper.INSTANCE;
 
   private final SupplierRepository supplierRepository;
   private final SupplierProductRepository supplierProductRepository;
@@ -71,6 +66,7 @@ public class StaffLogisticsController {
   private final CustomerOrdersRepository customerOrdersRepository;
   private final CustomerRepository customerRepository;
   private final CreditCardRepository creditCardRepository;
+
 
   public StaffLogisticsController(SupplierRepository supplierRepository,
                                   SupplierProductRepository supplierProductRepository,
@@ -148,6 +144,12 @@ public class StaffLogisticsController {
             new CycleAvoidingMappingContext())).collect(Collectors.toSet()));
   }
 
+@GetMapping("/customers")
+public ResponseEntity<Object> getCustomers() {
+    return ResponseEntity.ok(customerRepository.findAll().stream().map(
+            customer -> customerInfoMapper.convertCustomerInfoToCustomerInfoDTO(customer)
+    ));
+}
   @DeleteMapping("/suppliers/{id}")
   public ResponseEntity<Object> deleteSupplier(@PathVariable Long id) {
     if (supplierRepository.existsById(id)) {

@@ -22,6 +22,7 @@ import CustomerCreditCardsPage from "./pages/customer/creditcards/CustomerCredit
 import CustomerCreditCardsNewPage from "./pages/customer/creditcards/CustomerCreditCardsNewPage";
 import CustomerAddressesPage from "./pages/customer/addresses/CustomerAddressesPage";
 import CustomerAddressesNewPage from "./pages/customer/addresses/CustomerAddressesNewPage";
+import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
 
 function App() {
   const queryClient = new QueryClient();
@@ -61,7 +62,7 @@ function App() {
                   </Route>
                   <Route path="logistics" element={<StaffLogisticsPage />} />
                   <Route path="customerinfo">
-                    <Route index element={<p>Staff customerinfo</p>} />
+                    <Route index element={<CustomerInfo />} />
                     <Route path=":id" element={<p>Staff customerinfo id</p>} />
                   </Route>
                   <Route path="processing">
@@ -93,7 +94,7 @@ function App() {
                   </Route>
 
                   <Route path="account" element={<CutomerAccountPage />} />
-                  
+
                   <Route path="orders">
                     <Route index element={<CustomerOrdersPage />} />
                     <Route path=":id" element={<p>Customer order details</p>} />
