@@ -15,6 +15,7 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
 
   Set<CreditCard> findByCustomer_Id(Long customerId);
 
+  @Query("select c from CreditCard c where c.customer = :customer and c.isDefault = :aDefault")
   Optional<CreditCard> findByCustomerAndDefault(Customer customer, boolean aDefault);
 
   @Modifying

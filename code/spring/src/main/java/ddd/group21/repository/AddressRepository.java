@@ -19,5 +19,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
   @Transactional
   void setAllDefaultFalse(Long userAccountId);
 
-  Optional<Address> findByUserAccount_IdAndIsDefault(Long userAccountId, boolean aDefault);
+  @Query("select a from Address a where a.userAccount.id = :userAccountId and a.isDefault = :isDefault")
+  Optional<Address> findByUserAccount_IdAndDefaultIs(Long userAccountId, boolean isDefault);
 }
