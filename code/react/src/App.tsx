@@ -23,6 +23,7 @@ import CustomerCreditCardsNewPage from "./pages/customer/creditcards/CustomerCre
 import CustomerAddressesPage from "./pages/customer/addresses/CustomerAddressesPage";
 import CustomerAddressesNewPage from "./pages/customer/addresses/CustomerAddressesNewPage";
 import CustomerInfo from "./pages/staff/customerinfo/CustomerInfo";
+import RegisterPage from "./pages/login/RegisterPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -39,7 +40,9 @@ function App() {
               <Route element={<ReverseProtectedRoute />}>
                 <Route path="/login" element={<LoginPage />} />
               </Route>
-
+              <Route element={<ReverseProtectedRoute />}>
+                <Route path="/register" element={<RegisterPage />} />
+              </Route>
               <Route element={<ProtectedRoute />}>
                 <Route
                   path="/staff"
@@ -64,10 +67,6 @@ function App() {
                   <Route path="customerinfo">
                     <Route index element={<CustomerInfo />} />
                     <Route path=":id" element={<p>Staff customerinfo id</p>} />
-                  </Route>
-                  <Route path="processing">
-                    <Route index element={<p>Staff processing</p>} />
-                    <Route path=":id" element={<p>Staff processing id</p>} />
                   </Route>
                 </Route>
 

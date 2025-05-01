@@ -603,7 +603,7 @@ export const useStaffProducts = () => {
 export const useStaffCustomers = () => {
   const api = useApi();
 
-  const fetchStaffProducts = async (): Promise<Customer[]> => {
+  const fetchStaffCustomers = async (): Promise<Customer[]> => {
     const response = await api
       .get(`${API_URL}/staff/logistics/customers`)
       .json();
@@ -612,8 +612,8 @@ export const useStaffCustomers = () => {
   };
 
   const { data, isSuccess, refetch } = useQuery({
-    queryKey: ["staff-products"],
-    queryFn: () => fetchStaffProducts(),
+    queryKey: ["staff-customers"],
+    queryFn: () => fetchStaffCustomers(),
   });
 
   return {
@@ -622,7 +622,73 @@ export const useStaffCustomers = () => {
     refetch,
   };
 };
+export const useDeleteStaffCustomer = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
 
+  const DeleteStaffCustomer = async (id: number) => {
+    const response = await api.delete(
+      `${API_URL}/staff/logistics/customers/delete/${id}`,
+      {
+        throwHttpErrors: false,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete address: " + (await response.text()));
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["delete-customer"],
+    mutationFn: DeleteStaffCustomer,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useSetCustomerDefault = (
+  _onSuccess: () => void,
+  _onError: (message: string) => void
+) => {
+  const api = useApi();
+
+  const setCustomerDefault = async (customer: Customer) => {
+    const response = await api.post(
+      `${API_URL}/staff/logistics/customers/${customer.id}`,
+      {
+        throwHttpErrors: false,
+        json: customer,
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        "Failed to set customer default: " + (await response.text())
+      );
+    }
+
+    return;
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["set-customer-default"],
+    mutationFn: setCustomerDefault,
+    onSuccess: _onSuccess,
+    onError: (error) => {
+      _onError(error.message);
+    },
+  });
+
+  return mutation;
+};
 export const useStaffCustomerOrders = () => {
   const api = useApi();
 
@@ -792,7 +858,7 @@ export const useUpdateSupplier = (
   return mutation;
 };
 
-const useUpdateWarehouse = (
+export const useUpdateWarehouse = (
   _onSuccess: () => void,
   _onError: (message: string) => void
 ) => {

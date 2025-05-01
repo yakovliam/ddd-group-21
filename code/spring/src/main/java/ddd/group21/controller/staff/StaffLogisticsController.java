@@ -10,12 +10,7 @@ import ddd.group21.model.Stock;
 import ddd.group21.model.Supplier;
 import ddd.group21.model.SupplierProduct;
 import ddd.group21.model.Warehouse;
-import ddd.group21.model.dto.CreateProductDTO;
-import ddd.group21.model.dto.CustomerOrderDTO;
-import ddd.group21.model.dto.StockDTO;
-import ddd.group21.model.dto.SupplierDTO;
-import ddd.group21.model.dto.SupplierProductDTO;
-import ddd.group21.model.dto.WarehouseDTO;
+import ddd.group21.model.dto.*;
 import ddd.group21.model.mapper.*;
 import ddd.group21.repository.AddressRepository;
 import ddd.group21.repository.CreditCardRepository;
@@ -143,13 +138,36 @@ public class StaffLogisticsController {
         supplier -> supplierMapper.supplierToSupplierDTO(supplier,
             new CycleAvoidingMappingContext())).collect(Collectors.toSet()));
   }
+@PostMapping("/customers/{id}")
+public ResponseEntity<Object> createCustomer(@PathVariable("id") Long id,@RequestBody CustomerInfoDTO updatedData) {
 
+  Customer existing = customerRepository.findById(id).orElse(null);
+
+  if (existing == null) {
+    return ResponseEntity.status(404).body("Customer not found");
+  }
+
+  existing.setFirstName(updatedData.getFirstName());
+  existing.setLastName(updatedData.getLastName());
+  existing.setAccountBalance(updatedData.getAccountBalance());
+
+  customerRepository.save(existing);
+  return ResponseEntity.ok(existing);
+}
 @GetMapping("/customers")
 public ResponseEntity<Object> getCustomers() {
-    return ResponseEntity.ok(customerRepository.findAll().stream().map(
-            customer -> customerInfoMapper.convertCustomerInfoToCustomerInfoDTO(customer)
-    ));
+  return ResponseEntity.ok(customerRepository.findAll().stream().map(
+          customer -> customerInfoMapper.convertCustomerInfoToCustomerInfoDTO(customer)));
 }
+@DeleteMapping("/customers/delete/{id}")
+  public ResponseEntity<Object> deleteCustomer(@PathVariable("id") Long id)  {
+  if(customerRepository.existsById(id)) {
+    customerRepository.deleteById(id);
+    return ResponseEntity.ok("Customer with id " + id + " has been deleted");
+  }else {
+    return ResponseEntity.status(404).body("Customer with id " + id + " does not exist");
+  }
+  }
   @DeleteMapping("/suppliers/{id}")
   public ResponseEntity<Object> deleteSupplier(@PathVariable Long id) {
     if (supplierRepository.existsById(id)) {

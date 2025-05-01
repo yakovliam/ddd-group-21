@@ -13,7 +13,10 @@ import org.mapstruct.factory.Mappers;
 public interface CustomerInfoMapper {
 
     CustomerInfoMapper INSTANCE = Mappers.getMapper(CustomerInfoMapper.class);
-
-    @Mapping(target = "customer_id", source = "customer.id")
+    @Mapping(target = "userAccountId", source = "customer.userAccount.id")
+    @Mapping(target = "id", source = "customer.id")
+    @Mapping(target = "firstName", source = "customer.firstName")
+    @Mapping(target = "lastName", source = "customer.lastName")
+    @Mapping(target = "accountBalance", source = "customer.accountBalance")
     CustomerInfoDTO convertCustomerInfoToCustomerInfoDTO(Customer customer);
 }
